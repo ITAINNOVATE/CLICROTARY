@@ -1099,4 +1099,10 @@ h3 {
     .president-msg-grid > div:first-child {
         margin-top: 1rem;
     }
-}
+
+    .rotaract-interact-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+}
+

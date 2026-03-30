@@ -80,7 +80,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        clubs.forEach(club => {
+        // Sort: Rotary first, then alphabetical
+        const sortedClubs = [...clubs].sort((a, b) => {
+            if (a.type === 'Rotary' && b.type !== 'Rotary') return -1;
+            if (a.type !== 'Rotary' && b.type === 'Rotary') return 1;
+            return (a.name || '').localeCompare(b.name || '');
+        });
+
+        sortedClubs.forEach(club => {
             const card = document.createElement('div');
             card.className = 'club-card';
 
