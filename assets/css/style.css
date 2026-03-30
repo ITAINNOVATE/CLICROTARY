@@ -1100,9 +1100,10 @@ h3 {
         margin-top: 1rem;
     }
 
-    .rotaract-interact-grid {
+    .mobile-stack-grid {
         grid-template-columns: 1fr !important;
         gap: 1.5rem !important;
     }
 }
+
 
