@@ -31,7 +31,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Run all needed queries in parallel
     const results = await Promise.all(fetches);
     let idx = 0;
-    if (needsClubs)   { clubsData   = results[idx++]?.data || []; }
+    if (needsClubs)   { 
+        clubsData = (results[idx++]?.data || []).sort((a, b) => {
+            if (a.type === 'Rotary' && b.type !== 'Rotary') return -1;
+            if (a.type !== 'Rotary' && b.type === 'Rotary') return 1;
+            return (a.name || '').localeCompare(b.name || '');
+        });
+    }
     if (needsActions) { actionsData = results[idx++]?.data || []; }
     if (needsNews)    { newsData    = results[idx++]?.data || []; }
 
