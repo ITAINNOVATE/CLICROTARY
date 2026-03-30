@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Actualités - CLIC Rotary Admin</title>
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/admin.js"></script>
+    <!-- Include CKEditor for rich text editing -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo"><i class="fas fa-gear"></i> CLIC Rotary</div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Tableau de bord</a></li>
+            <li class="nav-item"><a href="clubs.html" class="nav-link"><i class="fas fa-users"></i> Clubs</a></li>
+            <li class="nav-item"><a href="actions.html" class="nav-link"><i class="fas fa-hand-holding-heart"></i> Actions</a></li>
+            <li class="nav-item"><a href="news.html" class="nav-link active"><i class="fas fa-newspaper"></i> Actualités</a></li>
+        </ul>
+        <a onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+    </div>
+
+    <main class="main-content">
+        <header class="header">
+            <h1>Gestion des Actualités</h1>
+            <button class="btn btn-primary" onclick="openModal()">+ Nouvel Article</button>
+        </header>
+
+        <div class="data-card">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Catégorie</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="news-tbody">
+                    <tr><td colspan="4">Chargement...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Modal Form -->
+    <div id="news-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; overflow-y:auto;">
+        <div style="background:white; margin:2% auto; padding:2.5rem; width:95%; max-width:900px; border-radius:8px;">
+            <h2 id="modal-title">Nouvel Article</h2>
+            <form id="news-form" style="margin-top:1.5rem;">
+                <input type="hidden" id="news-id">
+                <div class="stats-grid" style="grid-template-columns:2fr 1fr;">
+                    <div class="form-group">
+                        <label>Titre de l'Article</label>
+                        <input type="text" id="news-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Catégorie</label>
+                        <select id="news-category" required style="width:100%; padding:0.75rem; border:1px solid #ddd; border-radius:4px;">
+                            <option value="Événements">Événements</option>
+                            <option value="Temps forts nationaux">Temps forts nationaux</option>
+                            <option value="International">International</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="stats-grid" style="grid-template-columns:1fr 1fr;">
+                    <div class="form-group">
+                        <label>Date / Période</label>
+                        <input type="text" id="news-date" placeholder="Ex: 24 Janvier 2026">
+                    </div>
+                    <div class="form-group">
+                        <label>Club / Entité</label>
+                        <input type="text" id="news-club" placeholder="Ex: District 9103">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Image de Couverture (URL)</label>
+                    <input type="text" id="news-image" placeholder="Ex: https://lien-image.jpg">
+                </div>
+                <div class="form-group">
+                    <label>Résumé court</label>
+                    <textarea id="news-summary" rows="2" style="width:100%; padding:0.75rem; border:1px solid #ddd; border-radius:4px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Contenu de l'Article (HTML)</label>
+                    <div id="editor-container">
+                        <textarea id="news-content"></textarea>
+                    </div>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:1rem; margin-top:1.5rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const tbody = document.getElementById('news-tbody');
+        const modal = document.getElementById('news-modal');
+        const form = document.getElementById('news-form');
+        let editor;
+
+        // Initialize CKEditor
+        ClassicEditor
+            .create(document.querySelector('#news-content'))
+            .then(newEditor => { editor = newEditor; })
+            .catch(error => { console.error(error); });
+
+        async function fetchNews() {
+            const { data, error } = await supabaseClient.from('news').select('*').order('created_at', { ascending: false });
+            if (data) {
+                tbody.innerHTML = data.map(item => `
+                    <tr>
+                        <td>${item.title}</td>
+                        <td>${item.category}</td>
+                        <td>${item.date}</td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" onclick='openModal(${JSON.stringify(item).replace(/'/g, "&apos;")})'>Editer</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteNews(${item.id})">Supprimer</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function openModal(item = null) {
+            modal.style.display = 'block';
+            if (item) {
+                document.getElementById('modal-title').textContent = "Modifier l'Article";
+                document.getElementById('news-id').value = item.id;
+                document.getElementById('news-title').value = item.title;
+                document.getElementById('news-category').value = item.category;
+                document.getElementById('news-date').value = item.date;
+                document.getElementById('news-club').value = item.club;
+                document.getElementById('news-image').value = item.image || '';
+                document.getElementById('news-summary').value = item.summary;
+                editor.setData(item.content || '');
+            } else {
+                document.getElementById('modal-title').textContent = "Nouvel Article";
+                form.reset();
+                editor.setData('');
+                document.getElementById('news-id').value = '';
+            }
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('news-id').value;
+            const newsData = {
+                title: document.getElementById('news-title').value,
+                category: document.getElementById('news-category').value,
+                date: document.getElementById('news-date').value,
+                club: document.getElementById('news-club').value,
+                image: document.getElementById('news-image').value,
+                summary: document.getElementById('news-summary').value,
+                content: editor.getData()
+            };
+
+            const { error } = id 
+                ? await supabaseClient.from('news').update(newsData).eq('id', id)
+                : await supabaseClient.from('news').insert([newsData]);
+
+            if (error) alert("Erreur: " + error.message);
+            else {
+                closeModal();
+                fetchNews();
+            }
+        };
+
+        async function deleteNews(id) {
+            if (confirm("Supprimer cet article ?")) {
+                const { error } = await supabaseClient.from('news').delete().eq('id', id);
+                if (error) alert("Erreur: " + error.message);
+                else fetchNews();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchNews);
+    </script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejoindre - CLIC Rotary Bénin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container nav-container">
+            <div class="brand-logo">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="CLIC Rotary Bénin" style="height: 200px;">
+                </a>
+            </div>
+            <div class="mobile-toggle" id="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="le-clic.html">Le CLIC</a></li>
+                    <li><a href="clubs.html">Les Clubs</a></li>
+                    <li><a href="actions.html">Actions</a></li>
+                    <li><a href="actualites.html">Actualités</a></li>
+                    <li><a href="rotary-international.html">Le Rotary</a></li>
+                    <li><a href="nous-rejoindre.html" class="btn btn-primary active" style="padding: 0.5rem 1rem;">👉
+                            Rejoindre</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Page Header -->
+        <section class="page-header section-bg-blue"
+            style="padding: 3rem 0; min-height: 30vh; display: flex; align-items: center;">
+            <div class="container" style="text-align: center;">
+                <h1 style="margin-bottom: 1rem; color: white;">Rejoindre le Rotary au Bénin</h1>
+                <p style="color: #fff; font-size: 1.2rem; max-width: 700px; margin: 0 auto; line-height: 1.6;">
+                    Vous souhaitez rejoindre un club Rotary, Rotaract ou Interact, ou simplement en savoir plus ?<br>
+                    Remplissez ce formulaire et nous vous recontacterons rapidement.
+                </p>
+            </div>
+        </section>
+
+        <!-- Form Section -->
+        <section class="section bg-african-pattern">
+            <div class="container" style="max-width: 700px;">
+                <div
+                    style="background: white; padding: var(--space-lg); border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+
+                    <!-- Success Message (hidden by default) -->
+                    <div id="success-message"
+                        style="display: none; background: #d4edda; color: #155724; padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: var(--space-md); border: 1px solid #c3e6cb; text-align: center;">
+                        <i class="fas fa-check-circle"
+                            style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+                        <h3 style="margin-bottom: 0.5rem; color: #155724;">Merci pour votre intérêt pour le Rotary.</h3>
+                        <p style="margin: 0;">Votre demande a bien été reçue. Un club proche de vous vous contactera
+                            prochainement.</p>
+                    </div>
+
+                    <!-- Form -->
+                    <form id="join-form" style="display: block;">
+                        <div style="margin-bottom: var(--space-md);">
+                            <label for="fullname"
+                                style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--color-text-main);">
+                                Nom et prénom <span style="color: var(--color-accent);">*</span>
+                            </label>
+                            <input type="text" id="fullname" name="fullname" required
+                                style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: var(--radius-sm); font-size: 1rem; font-family: 'Inter', sans-serif; transition: border-color 0.3s;"
+                                placeholder="Ex: Jean Dupont">
+                        </div>
+
+                        <div style="margin-bottom: var(--space-md);">
+                            <label for="email"
+                                style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--color-text-main);">
+                                Adresse e-mail <span style="color: var(--color-accent);">*</span>
+                            </label>
+                            <input type="email" id="email" name="email" required
+                                style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: var(--radius-sm); font-size: 1rem; font-family: 'Inter', sans-serif; transition: border-color 0.3s;"
+                                placeholder="Ex: jean.dupont@email.com">
+                        </div>
+
+                        <div style="margin-bottom: var(--space-md);">
+                            <label for="phone"
+                                style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--color-text-main);">
+                                Numéro de téléphone <span style="color: var(--color-accent);">*</span>
+                            </label>
+                            <input type="tel" id="phone" name="phone" required
+                                style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: var(--radius-sm); font-size: 1rem; font-family: 'Inter', sans-serif; transition: border-color 0.3s;"
+                                placeholder="Ex: +229 XX XX XX XX">
+                        </div>
+
+                        <div style="margin-bottom: var(--space-md);">
+                            <label for="city"
+                                style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--color-text-main);">
+                                Ville de résidence
+                            </label>
+                            <input type="text" id="city" name="city"
+                                style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: var(--radius-sm); font-size: 1rem; font-family: 'Inter', sans-serif; transition: border-color 0.3s;"
+                                placeholder="Ex: Cotonou">
+                        </div>
+
+                        <div style="margin-bottom: var(--space-md);">
+                            <label for="club-type"
+                                style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--color-text-main);">
+                                Je souhaite rejoindre
+                            </label>
+                            <select id="club-type" name="club-type"
+                                style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: var(--radius-sm); font-size: 1rem; font-family: 'Inter', sans-serif; transition: border-color 0.3s; background: white;">
+                                <option value="">-- Sélectionnez une option --</option>
+                                <option value="rotary">Rotary</option>
+                                <option value="rotaract">Rotaract</option>
+                                <option value="interact">Interact</option>
+                                <option value="info">Je souhaite en savoir plus</option>
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom: var(--space-md);">
+                            <label for="message"
+                                style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--color-text-main);">
+                                Message (optionnel)
+                            </label>
+                            <textarea id="message" name="message" rows="4"
+                                style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: var(--radius-sm); font-size: 1rem; font-family: 'Inter', sans-serif; resize: vertical; transition: border-color 0.3s;"
+                                placeholder="Parlez-nous de votre motivation ou posez vos questions..."></textarea>
+                        </div>
+
+                        <div style="text-align: center; margin-top: var(--space-lg);">
+                            <button type="submit" class="btn btn-primary"
+                                style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+                                <i class="fas fa-paper-plane" style="margin-right: 0.5rem;"></i>
+                                Envoyer ma demande
+                            </button>
+                        </div>
+
+                        <p
+                            style="text-align: center; margin-top: var(--space-md); color: var(--color-text-muted); font-size: 0.9rem;">
+                            <i class="fas fa-lock" style="margin-right: 0.3rem;"></i>
+                            Vos informations sont traitées de manière confidentielle.
+                        </p>
+                    </form>
+                </div>
+
+                <!-- Additional Info -->
+                <div style="margin-top: var(--space-lg); text-align: center;">
+                    <p style="color: var(--color-text-muted); margin-bottom: 1rem;">
+                        Vous avez des questions ? Consultez notre page d'information sur le Rotary.
+                    </p>
+                    <a href="rotary-international.html" class="btn btn-secondary">
+                        <i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i>
+                        En savoir plus sur le Rotary
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>CLIC Rotary Bénin</h4>
+                    <p>Unir pour servir.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Liens Rapides</h4>
+                    <ul>
+                        <li><a href="le-clic.html">Le CLIC</a></li>
+                        <li><a href="clubs.html">Les Clubs</a></li>
+                        <li><a href="rotary-international.html">Le Rotary</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <p>contact@clicrotarybenin.org</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <a href="admin/login.html" style="color: inherit; text-decoration: none; cursor: default;" title="Accès administrateur">2026</a> CLIC Rotary Bénin. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script>
+        // Form handling
+        document.getElementById('join-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get form data
+            const formData = {
+                fullname: document.getElementById('fullname').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                city: document.getElementById('city').value,
+                clubType: document.getElementById('club-type').value,
+                message: document.getElementById('message').value
+            };
+
+            // Log to console (in production, this would send to a backend)
+            console.log('Form submitted:', formData);
+
+            // Hide form and show success message
+            document.getElementById('join-form').style.display = 'none';
+            document.getElementById('success-message').style.display = 'block';
+
+            // Scroll to success message
+            document.getElementById('success-message').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Optional: Reset form after a delay
+            setTimeout(function () {
+                document.getElementById('join-form').reset();
+            }, 1000);
+        });
+
+        // Add focus effect to inputs
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function () {
+                this.style.borderColor = 'var(--color-rotary-blue)';
+                this.style.outline = 'none';
+            });
+            input.addEventListener('blur', function () {
+                this.style.borderColor = '#ddd';
+            });
+        });
+    </script>
+</body>
+
+</html>

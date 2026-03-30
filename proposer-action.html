@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposer une Action - CLIC Rotary Bénin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* Photo Upload Zone */
+        .photo-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .photo-slot {
+            position: relative;
+            aspect-ratio: 4/3;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+        .photo-slot:hover { border-color: var(--color-rotary-blue, #005DAA); background: #f0f5ff; }
+        .photo-slot .slot-placeholder { text-align: center; color: #aaa; pointer-events: none; }
+        .photo-slot .slot-placeholder i { font-size: 2rem; display: block; margin-bottom: 0.4rem; }
+        .photo-slot .slot-placeholder span { font-size: 0.8rem; }
+        .photo-slot input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+        .photo-slot img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .photo-slot .remove-btn {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.85rem;
+            z-index: 10;
+        }
+        .photo-slot.has-image .remove-btn { display: flex; }
+        .photo-slot.has-image { border-style: solid; border-color: #28a745; }
+        .photo-slot .slot-label {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(0,93,170,0.75);
+            color: white;
+            text-align: center;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 4px;
+        }
+
+        /* Preview Modal */
+        .preview-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .preview-overlay.open { display: flex; }
+        .preview-modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 760px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .preview-modal-header {
+            background: linear-gradient(135deg, #005DAA, #0080cc);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .preview-modal-header h2 { margin: 0; font-size: 1.25rem; }
+        .preview-modal-body { padding: 2rem; }
+        .preview-section { margin-bottom: 1.5rem; }
+        .preview-section h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #888;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid #eee;
+        }
+        .preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 1.5rem; }
+        .preview-item { }
+        .preview-item .pi-label { font-size: 0.8rem; color: #999; margin-bottom: 2px; }
+        .preview-item .pi-value { font-weight: 600; color: #222; }
+        .preview-desc { background: #f8f9fa; padding: 1rem; border-radius: 8px; font-size: 0.9rem; line-height: 1.7; white-space: pre-line; color: #444; }
+        .preview-photos { display: flex; gap: 0.75rem; }
+        .preview-photos img { width: 100px; height: 75px; object-fit: cover; border-radius: 6px; border: 2px solid #eee; }
+        .preview-modal-footer {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        @media(max-width: 600px) {
+            .photo-slots { grid-template-columns: 1fr 1fr; }
+            .preview-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container nav-container">
+            <div class="brand-logo">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="CLIC Rotary Bénin" style="height: 200px;">
+                </a>
+            </div>
+            <div class="mobile-toggle" id="mobile-toggle"><i class="fas fa-bars"></i></div>
+            <nav>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="le-clic.html">Le CLIC</a></li>
+                    <li><a href="clubs.html">Les Clubs</a></li>
+                    <li><a href="actions.html" class="active">Actions</a></li>
+                    <li><a href="actualites.html">Actualités</a></li>
+                    <li><a href="rotary-international.html">Le Rotary</a></li>
+                    <li><a href="nous-rejoindre.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">👉 Rejoindre</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="section bg-african-pattern">
+        <div class="container">
+            <h1 style="text-align: center; margin-bottom: 2rem;">Proposer une Action</h1>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto 3rem auto;">
+                Remplissez ce formulaire pour soumettre une action de votre club. Après validation par le CLIC, elle sera publiée sur le site.
+            </p>
+
+            <form id="submit-action-form" style="max-width: 800px; margin: 0 auto;" novalidate>
+
+                <!-- 1. Identification -->
+                <div class="form-section">
+                    <h3>1. Identification du club &amp; Responsable</h3>
+                    <div class="form-group">
+                        <label>Nom du Club</label>
+                        <select id="sa-club-id" required>
+                            <option value="">Sélectionnez votre club</option>
+                        </select>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Nom du Responsable</label>
+                            <input type="text" id="sa-resp-name" required placeholder="Nom et Prénoms">
+                        </div>
+                        <div class="form-group">
+                            <label>Fonction</label>
+                            <input type="text" id="sa-resp-role" placeholder="Ex: Président, Secrétaire...">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact (Email / Tél)</label>
+                        <input type="text" id="sa-resp-contact" required placeholder="Email ou Téléphone">
+                    </div>
+                </div>
+
+                <!-- 2. Informations Générales -->
+                <div class="form-section">
+                    <h3>2. Informations de l'Action</h3>
+                    <div class="form-group">
+                        <label>Intitulé de l'action</label>
+                        <input type="text" id="sa-title" required placeholder="Titre du projet">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Année de réalisation</label>
+                            <select id="sa-year">
+                                <option value="2026">2026</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Statut</label>
+                            <select id="sa-status">
+                                <option value="À venir">À venir</option>
+                                <option value="En cours">En cours</option>
+                                <option value="Réalisée">Réalisée</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Axe prioritaire</label>
+                        <select id="sa-type" required>
+                            <option value="">Choisir un axe...</option>
+                            <option value="Paix et prévention des conflits">Paix et prévention des conflits</option>
+                            <option value="Prévention et traitement des maladies">Prévention et traitement des maladies</option>
+                            <option value="Eau, assainissement et hygiène">Eau, assainissement et hygiène</option>
+                            <option value="Santé de la mère et de l'enfant">Santé de la mère et de l'enfant</option>
+                            <option value="Éducation de base et alphabétisation">Éducation de base et alphabétisation</option>
+                            <option value="Développement économique et local">Développement économique et local</option>
+                            <option value="Protection de l'environnement">Protection de l'environnement</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 3. Localisation -->
+                <div class="form-section">
+                    <h3>3. Localisation</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Département</label>
+                            <input type="text" id="sa-dept">
+                        </div>
+                        <div class="form-group">
+                            <label>Commune</label>
+                            <input type="text" id="sa-city">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Description -->
+                <div class="form-section">
+                    <h3>4. Description</h3>
+                    <div class="form-group">
+                        <label>Problème identifié</label>
+                        <textarea id="sa-problem" placeholder="Quel besoin adressez-vous ?" style="min-height: 80px;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Description de l'action</label>
+                        <textarea id="sa-desc" placeholder="Décrivez l'action en 5-7 lignes..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Bénéficiaires ciblés</label>
+                        <input type="text" id="sa-beneficiaries" placeholder="Ex: Enfants, Femmes, Communauté villageoise...">
+                    </div>
+                </div>
+
+                <!-- 5. Photos -->
+                <div class="form-section">
+                    <h3>5. Photos</h3>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
+                        <i class="fas fa-info-circle" style="color: #005DAA;"></i>
+                        Ajoutez jusqu'à 3 photos illustrant votre action. Cliquez sur un cadre pour choisir une image.
+                    </p>
+                    <div class="photo-slots">
+                        <!-- Slot 1 - Cover photo -->
+                        <div class="photo-slot" id="slot-0">
+                            <input type="file" accept="image/*" onchange="handlePhoto(0, this)">
+                            <div class="slot-placeholder">
+                                <i class="fas fa-camera"></i>
+                                <span>Photo principale</span>
+                            </div>
+                            <button type="button" class="remove-btn" onclick="removePhoto(0)">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <div class="slot-label">Photo 1 (couverture)</div>
+                        </div>
+                        <!-- Slot 2 -->
+                        <div class="photo-slot" id="slot-1">
+                            <input type="file" accept="image/*" onchange="handlePhoto(1, this)">
+                            <div class="slot-placeholder">
+                                <i class="fas fa-image"></i>
+                                <span>Ajouter une photo</span>
+                            </div>
+                            <button type="button" class="remove-btn" onclick="removePhoto(1)">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <div class="slot-label">Photo 2</div>
+                        </div>
+                        <!-- Slot 3 -->
+                        <div class="photo-slot" id="slot-2">
+                            <input type="file" accept="image/*" onchange="handlePhoto(2, this)">
+                            <div class="slot-placeholder">
+                                <i class="fas fa-image"></i>
+                                <span>Ajouter une photo</span>
+                            </div>
+                            <button type="button" class="remove-btn" onclick="removePhoto(2)">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <div class="slot-label">Photo 3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Validate -->
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="sa-certify" required>
+                        Je certifie l'exactitude des informations fournies et autorise leur publication.
+                    </label>
+                </div>
+
+                <div style="text-align: center; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button type="button" id="btn-preview" class="btn btn-secondary" style="min-width: 200px; border-color: #005DAA; color: #005DAA;">
+                        <i class="fas fa-eye"></i> Prévisualiser avant envoi
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <!-- ===== PREVIEW MODAL ===== -->
+    <div class="preview-overlay" id="preview-overlay">
+        <div class="preview-modal">
+            <div class="preview-modal-header">
+                <h2><i class="fas fa-clipboard-check"></i> &nbsp;Vérification avant soumission</h2>
+                <button onclick="closePreview()" style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <div class="preview-modal-body" id="preview-body">
+                <!-- Filled dynamically -->
+            </div>
+            <div class="preview-modal-footer">
+                <button class="btn btn-secondary" onclick="closePreview()" style="border-color:#ccc; color:#555;">
+                    <i class="fas fa-pencil-alt"></i> Modifier
+                </button>
+                <button class="btn btn-primary" id="btn-confirm-submit">
+                    <i class="fas fa-paper-plane"></i> Confirmer et Soumettre
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container" style="text-align: center;">
+            <p>&copy; <a href="admin/login.html" style="color: inherit; text-decoration: none; cursor: default;" title="Accès administrateur">2026</a> CLIC Rotary Bénin</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script>
+        // ─────── Photo slots ───────
+        const photoData = [null, null, null]; // base64 data per slot
+
+        function handlePhoto(index, input) {
+            if (!input.files || !input.files[0]) return;
+            const file = input.files[0];
+
+            // Validate size (max 3MB)
+            if (file.size > 3 * 1024 * 1024) {
+                alert('Cette image est trop lourde (max 3 Mo). Veuillez en choisir une autre.');
+                input.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                photoData[index] = e.target.result; // base64 data URL
+                const slot = document.getElementById('slot-' + index);
+
+                // Remove old preview img if exists
+                const existingImg = slot.querySelector('img.preview-img');
+                if (existingImg) existingImg.remove();
+
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.className = 'preview-img';
+                slot.appendChild(img);
+                slot.classList.add('has-image');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removePhoto(index) {
+            photoData[index] = null;
+            const slot = document.getElementById('slot-' + index);
+            const img = slot.querySelector('img.preview-img');
+            if (img) img.remove();
+            slot.classList.remove('has-image');
+            // Reset file input
+            const input = slot.querySelector('input[type="file"]');
+            input.value = '';
+        }
+
+        // ─────── Preview Modal ───────
+        document.getElementById('btn-preview').addEventListener('click', () => {
+            const form = document.getElementById('submit-action-form');
+
+            // Basic validation check
+            const requiredFields = form.querySelectorAll('[required]');
+            let valid = true;
+            requiredFields.forEach(field => {
+                if (!field.value) {
+                    field.style.borderColor = '#dc3545';
+                    field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    valid = false;
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
+            if (!valid) {
+                alert('Veuillez remplir tous les champs obligatoires marqués en rouge.');
+                return;
+            }
+
+            const clubSelect = document.getElementById('sa-club-id');
+            const clubName = clubSelect.options[clubSelect.selectedIndex]?.text || '-';
+
+            const previews = photoData.filter(Boolean).map(src =>
+                `<img src="${src}" alt="Aperçu photo">`
+            ).join('');
+
+            const desc = document.getElementById('sa-desc').value;
+            const problem = document.getElementById('sa-problem').value;
+            const loc = [document.getElementById('sa-city').value, document.getElementById('sa-dept').value].filter(Boolean).join(', ');
+
+            document.getElementById('preview-body').innerHTML = `
+                <div class="preview-section">
+                    <h4><i class="fas fa-users"></i> Club &amp; Responsable</h4>
+                    <div class="preview-grid">
+                        <div class="preview-item">
+                            <div class="pi-label">Club</div>
+                            <div class="pi-value">${clubName}</div>
+                        </div>
+                        <div class="preview-item">
+                            <div class="pi-label">Responsable</div>
+                            <div class="pi-value">${document.getElementById('sa-resp-name').value} — ${document.getElementById('sa-resp-role').value || 'N/A'}</div>
+                        </div>
+                        <div class="preview-item">
+                            <div class="pi-label">Contact</div>
+                            <div class="pi-value">${document.getElementById('sa-resp-contact').value}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="preview-section">
+                    <h4><i class="fas fa-info-circle"></i> Action</h4>
+                    <div class="preview-grid">
+                        <div class="preview-item">
+                            <div class="pi-label">Titre</div>
+                            <div class="pi-value">${document.getElementById('sa-title').value}</div>
+                        </div>
+                        <div class="preview-item">
+                            <div class="pi-label">Axe prioritaire</div>
+                            <div class="pi-value">${document.getElementById('sa-type').value}</div>
+                        </div>
+                        <div class="preview-item">
+                            <div class="pi-label">Statut</div>
+                            <div class="pi-value">${document.getElementById('sa-status').value}</div>
+                        </div>
+                        <div class="preview-item">
+                            <div class="pi-label">Année</div>
+                            <div class="pi-value">${document.getElementById('sa-year').value}</div>
+                        </div>
+                        ${loc ? `<div class="preview-item"><div class="pi-label">Lieu</div><div class="pi-value">${loc}</div></div>` : ''}
+                        ${document.getElementById('sa-beneficiaries').value ? `<div class="preview-item"><div class="pi-label">Bénéficiaires</div><div class="pi-value">${document.getElementById('sa-beneficiaries').value}</div></div>` : ''}
+                    </div>
+                </div>
+                ${problem || desc ? `
+                <div class="preview-section">
+                    <h4><i class="fas fa-align-left"></i> Description</h4>
+                    ${problem ? `<p style="font-size:0.85rem; color:#888; margin-bottom:0.4rem;"><strong>Problème identifié :</strong></p><div class="preview-desc" style="margin-bottom:0.75rem;">${problem}</div>` : ''}
+                    <div class="preview-desc">${desc}</div>
+                </div>` : ''}
+                ${previews ? `
+                <div class="preview-section">
+                    <h4><i class="fas fa-images"></i> Photos (${photoData.filter(Boolean).length})</h4>
+                    <div class="preview-photos">${previews}</div>
+                </div>` : '<div class="preview-section"><h4><i class="fas fa-images"></i> Photos</h4><p style="color:#aaa; font-style:italic;">Aucune photo ajoutée.</p></div>'}
+            `;
+
+            document.getElementById('preview-overlay').classList.add('open');
+        });
+
+        function closePreview() {
+            document.getElementById('preview-overlay').classList.remove('open');
+        }
+
+        // Close on backdrop click
+        document.getElementById('preview-overlay').addEventListener('click', function(e) {
+            if (e.target === this) closePreview();
+        });
+
+        // ─────── Actual Submission ───────
+        document.addEventListener('DOMContentLoaded', async () => {
+            const clubSelect = document.getElementById('sa-club-id');
+
+            // Populate clubs dynamically
+            const { data: clubs } = await supabaseClient.from('clubs').select('id, name').order('name');
+            if (clubs && clubs.length > 0) {
+                clubSelect.innerHTML = '<option value="">Sélectionnez votre club</option>' +
+                    clubs.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            }
+
+            document.getElementById('btn-confirm-submit').addEventListener('click', async () => {
+                const btn = document.getElementById('btn-confirm-submit');
+                btn.textContent = 'Envoi en cours...';
+                btn.disabled = true;
+
+                const respName = document.getElementById('sa-resp-name').value;
+                const respRole = document.getElementById('sa-resp-role').value;
+                const respContact = document.getElementById('sa-resp-contact').value;
+                const problem = document.getElementById('sa-problem').value;
+                const desc = document.getElementById('sa-desc').value;
+
+                let finalDescription = `[Proposé par: ${respName} (${respRole || 'N/A'}) - Contact: ${respContact}]\n\n`;
+                if (problem) finalDescription += `--- PROBLÈME IDENTIFIÉ ---\n${problem}\n\n`;
+                finalDescription += `--- DESCRIPTION ---\n${desc}`;
+
+                const city = document.getElementById('sa-city').value;
+                const dept = document.getElementById('sa-dept').value;
+                const finalLocation = [city, dept].filter(Boolean).join(', ');
+
+                const actionData = {
+                    title: document.getElementById('sa-title').value,
+                    club_id: parseInt(clubSelect.value, 10) || null,
+                    type: document.getElementById('sa-type').value,
+                    year: document.getElementById('sa-year').value,
+                    status: document.getElementById('sa-status').value,
+                    location: finalLocation,
+                    description: finalDescription,
+                    beneficiaries: document.getElementById('sa-beneficiaries').value,
+                    image: photoData[0] || null,
+                    photo2: photoData[1] || null,
+                    photo3: photoData[2] || null,
+                    is_approved: false
+                };
+
+                const { error } = await supabaseClient.from('actions').insert([actionData]);
+
+                if (error) {
+                    alert("Une erreur est survenue lors de l'envoi : " + error.message);
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Confirmer et Soumettre';
+                    btn.disabled = false;
+                } else {
+                    closePreview();
+                    document.getElementById('submit-action-form').reset();
+                    // Clear all photo slots
+                    [0, 1, 2].forEach(i => removePhoto(i));
+
+                    // Show success
+                    document.querySelector('main').innerHTML = `
+                        <div class="container" style="text-align: center; padding: 5rem 1rem;">
+                            <div style="font-size: 4rem; margin-bottom: 1.5rem;">✅</div>
+                            <h2 style="color: #005DAA; margin-bottom: 1rem;">Action soumise avec succès !</h2>
+                            <p style="color: #666; max-width: 500px; margin: 0 auto 2rem auto; line-height: 1.7;">
+                                Merci pour votre contribution. Votre action sera examinée par l'équipe du CLIC et publiée sur le site après validation.
+                            </p>
+                            <a href="actions.html" class="btn btn-primary" style="margin-right: 1rem;">Voir les actions</a>
+                            <a href="proposer-action.html" class="btn btn-secondary" style="border-color:#ccc; color:#555;">Proposer une autre action</a>
+                        </div>
+                    `;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

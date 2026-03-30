@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Clubs - CLIC Rotary Bénin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container nav-container">
+            <div class="brand-logo">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="CLIC Rotary Bénin" style="height: 200px;">
+                </a>
+            </div>
+            <div class="mobile-toggle" id="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="le-clic.html">Le CLIC</a></li>
+                    <li><a href="clubs.html" class="active">Les Clubs</a></li>
+                    <li><a href="actions.html">Actions</a></li>
+                    <li><a href="actualites.html">Actualités</a></li>
+                    <li><a href="rotary-international.html">Le Rotary</a></li>
+                    <li><a href="nous-rejoindre.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">👉
+                            Rejoindre</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="page-header section-bg-blue"
+            style="padding: 3rem 0 2rem 0; background: linear-gradient(rgba(0, 93, 170, 0.9), rgba(0, 93, 170, 0.9)), url('assets/images/header_clubs.png') center/cover no-repeat; text-align: center;">
+            <div class="container">
+                <h1 style="margin-bottom: 0.5rem; color: white;">Unis pour servir le Bénin</h1>
+                <p
+                    style="color: #fff; font-size: 1.4rem; font-weight: 500; line-height: 1.3; margin-bottom: 1.5rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    Rotary, Rotaract et Interact engagés pour l’impact social durable
+                </p>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                    <a href="le-clic.html" class="btn btn-primary"
+                        style="background-color: white; color: var(--color-rotary-blue); border: 2px solid white; padding: 0.5rem 1rem; font-size: 0.9rem;">Découvrir
+                        le CLIC</a>
+                    <a href="actions.html" class="btn btn-secondary"
+                        style="border-color: white; color: white; padding: 0.5rem 1rem; font-size: 0.9rem;">Voir nos
+                        actions</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section bg-african-pattern">
+            <div class="container">
+                <!-- Intro -->
+                <div style="text-align: center; max-width: 800px; margin: 0 auto var(--space-md) auto;">
+                    <p>Le Rotary au Bénin est animé par un réseau de clubs engagés au service des communautés. Répartis
+                        dans plusieurs villes du pays, les clubs Rotary, Rotaract et Interact rassemblent des femmes et
+                        des hommes unis par les valeurs de service, d’éthique et de leadership.</p>
+                </div>
+
+                <!-- Tabs Navigation -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="clubs">Nos Clubs</button>
+                    <button class="tab-btn" data-tab="members">Répertoire des Membres</button>
+                </div>
+
+                <!-- Clubs Tab Content -->
+                <div id="clubs-tab" class="tab-content active">
+                    <!-- Filters -->
+                    <div class="filter-container"
+                        style="background: var(--color-bg-light); padding: var(--space-md); border-radius: var(--radius-md); margin-bottom: var(--space-lg);">
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <input type="text" id="search-input" placeholder="Rechercher un club..."
+                                style="padding: 0.75rem; border: 1px solid #ddd; border-radius: var(--radius-sm);">
+                            <select id="city-filter"
+                                style="padding: 0.75rem; border: 1px solid #ddd; border-radius: var(--radius-sm);">
+                                <option value="">Toutes les villes</option>
+                                <option value="Cotonou">Cotonou</option>
+                                <option value="Porto-Novo">Porto-Novo</option>
+                                <option value="Parakou">Parakou</option>
+                                <option value="Abomey-Calavi">Abomey-Calavi</option>
+                                <option value="Bohicon">Bohicon</option>
+                                <option value="Abomey">Abomey</option>
+                                <option value="Natitingou">Natitingou</option>
+                                <option value="En ligne">En ligne</option>
+                            </select>
+                            <select id="type-filter"
+                                style="padding: 0.75rem; border: 1px solid #ddd; border-radius: var(--radius-sm);">
+                                <option value="">Tous les types</option>
+                                <option value="Rotary">Rotary</option>
+                                <option value="Rotaract">Rotaract</option>
+                                <option value="Interact">Interact</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Club Grid -->
+                    <div class="stats-grid" id="clubs-grid"
+                        style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
+                        <!-- Cards will be injected by JS -->
+                        <p style="grid-column: 1/-1; text-align: center;">Chargement des clubs...</p>
+                    </div>
+                </div>
+
+                <!-- Members Directory Tab Content -->
+                <div id="members-tab" class="tab-content">
+                    <!-- Member Filters -->
+                    <div class="filter-container"
+                        style="background: var(--color-bg-light); padding: var(--space-md); border-radius: var(--radius-md); margin-bottom: var(--space-lg);">
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <input type="text" id="member-search"
+                                placeholder="Rechercher un membre (nom, classification...)"
+                                style="padding: 0.75rem; border: 1px solid #ddd; border-radius: var(--radius-sm);">
+                            <select id="member-type-filter"
+                                style="padding: 0.75rem; border: 1px solid #ddd; border-radius: var(--radius-sm);">
+                                <option value="">Toutes les catégories</option>
+                                <option value="Rotarien">Rotariens</option>
+                                <option value="Rotaractien">Rotaractiens</option>
+                                <option value="Interactien">Interactiens</option>
+                            </select>
+                            <input type="text" id="member-club-filter" placeholder="Filtrer par club..."
+                                style="padding: 0.75rem; border: 1px solid #ddd; border-radius: var(--radius-sm);">
+                        </div>
+                    </div>
+
+                    <!-- Members Directory -->
+                    <div class="directory-container">
+                        <div class="member-header">
+                            <div>Membre / Club</div>
+                            <div>Classification</div>
+                            <div>Catégorie</div>
+                            <div>Contact</div>
+                            <div>Actions</div>
+                        </div>
+                        <div id="members-list">
+                            <!-- Members will be injected by JS -->
+                            <p style="text-align: center; padding: 2rem;">Chargement du répertoire...</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="section bg-african-pattern">
+            <div class="container" style="text-align: center;">
+                <h2>Vous souhaitez rejoindre un club ?</h2>
+                <div style="margin-top: var(--space-md);">
+                    <a href="#contact" class="btn btn-primary" style="margin-right: 1rem;">Contacter le CLIC</a>
+                    <a href="#" class="btn btn-secondary"
+                        style="border-color: var(--color-rotary-blue); color: var(--color-rotary-blue);">Trouver un club
+                        près de moi</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>CLIC Rotary Bénin</h4>
+                    <p>Unir pour servir.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Liens Rapides</h4>
+                    <ul>
+                        <li><a href="le-clic.html">Le CLIC</a></li>
+                        <li><a href="clubs.html">Les Clubs</a></li>
+                        <li><a href="rotary-international.html">Le Rotary</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <p>contact@clicrotarybenin.org</p>
+                    <p><a href="tel:002290197330925" style="color: inherit; text-decoration: none;">Tél: 00229 01 97 33
+                            09 25</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <a href="admin/login.html" style="color: inherit; text-decoration: none; cursor: default;" title="Accès administrateur">2026</a> CLIC Rotary Bénin. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+</body>
+
+</html>

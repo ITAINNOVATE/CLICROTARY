@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Site institutionnel du CLIC Rotary Bénin. Unir les clubs pour plus d'impact.">
+    <title>CLIC Rotary Bénin - Accueil</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container nav-container">
+            <div class="brand-logo">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="CLIC Rotary Bénin" style="height: 200px;">
+                </a>
+            </div>
+            <div class="mobile-toggle" id="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="index.html" class="active">Accueil</a></li>
+                    <li><a href="le-clic.html">Le CLIC</a></li>
+                    <li><a href="clubs.html">Les Clubs</a></li>
+                    <li><a href="actions.html">Actions</a></li>
+                    <li><a href="actualites.html">Actualités</a></li>
+                    <li><a href="rotary-international.html">Le Rotary</a></li>
+                    <li><a href="nous-rejoindre.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">👉
+                            Rejoindre</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Hero Section -->
+        <section class="hero"
+            style="padding: 3rem 0 4.5rem 0; min-height: 50vh; display: flex; align-items: center; position: relative; background: var(--color-rotary-blue); overflow: hidden;">
+
+            <!-- Dynamic Background -->
+            <div
+                style="position: absolute; top: 0; right: 0; width: 65%; height: 100%; background: linear-gradient(to right, var(--color-rotary-blue) 20%, rgba(0, 93, 170, 0.3) 60%, rgba(0, 93, 170, 0) 100%), url('assets/images/header_accueil.png') center/cover no-repeat; z-index: 0;">
+            </div>
+
+            <div class="container" style="position: relative; z-index: 2; color: white;">
+                <div style="max-width: 650px; text-align: left;">
+
+                    <h1
+                        style="margin-bottom: 0.5rem; color: white; line-height: 1; font-weight: 900; font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -1.5px; text-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                        CLIC Rotary Bénin
+                    </h1>
+
+                    <p
+                        style="font-size: 1.15rem; text-transform: uppercase; letter-spacing: 2.5px; font-weight: 700; color: var(--color-rotary-gold); margin-bottom: 1.5rem;">
+                        Comité de Liaison Inter Clubs du Rotary au Bénin
+                    </p>
+
+                    <p
+                        style="font-size: 1.2rem; margin-bottom: 2.5rem; line-height: 1.6; color: rgba(255,255,255,0.95); font-weight: 400; max-width: 550px;">
+                        Unir les clubs Rotary, Rotaract et Interact du Bénin pour amplifier notre impact au service des
+                        communautés locales.
+                    </p>
+
+                    <div class="hero-actions"
+                        style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: flex-start;">
+                        <a href="le-clic.html" class="btn btn-primary"
+                            style="padding: 1rem 2.2rem; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">Découvrir
+                            le CLIC</a>
+                        <a href="clubs.html" class="btn btn-secondary"
+                            style="padding: 1rem 2.2rem; border: 2px solid white; color: white; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;">Voir
+                            les clubs</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Presentation -->
+        <section class="section bg-african-pattern" style="padding-top: 1.5rem;">
+            <div class="container">
+                <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                    <h2>Qui sommes-nous ?</h2>
+                    <p style="font-size: 1.1rem; color: var(--color-text-muted);">
+                        Le Comité de Liaison Inter Clubs (CLIC) Rotary Bénin est un cadre de concertation et de
+                        collaboration entre les Rotary clubs du Bénin. <br>
+                        Il œuvre pour le renforcement de la synergie interclubs, la coordination des actions communes et
+                        la promotion des valeurs du Rotary International.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mot du Président -->
+        <section class="section bg-african-pattern" style="padding-top: 0.5rem;">
+            <div class="container">
+                <div class="president-teaser-card">
+                    <div class="president-teaser-content">
+                        <!-- Content -->
+                        <div style="padding: var(--space-md); flex: 2;">
+                            <h2 style="margin-bottom: 1rem;">Mot du Président</h2>
+                            <blockquote
+                                style="font-size: 1.1rem; font-style: italic; color: var(--color-text-main); margin-bottom: 1.5rem; border-left: 4px solid var(--color-rotary-gold); padding-left: 1rem;">
+                                "Chers Rotariens, chers partenaires, chers visiteurs,<br><br>
+                                C’est avec un profond sentiment de responsabilité et d’engagement que je vous souhaite
+                                la bienvenue sur la plateforme officielle du Comité de Liaison Inter Clubs (CLIC) du
+                                Rotary Bénin.<br>
+                                Le CLIC est né d’une conviction forte : l’union de nos clubs est une force..."
+                            </blockquote>
+                            <div style="margin-bottom: 1.5rem;">
+                                <strong>Mohamed BONI SENI</strong><br>
+                                <span style="color: var(--color-text-muted);">Président du CLIC – Rotary Bénin</span>
+                            </div>
+                            <a href="le-clic.html#mot-president" class="btn btn-primary" style="font-size: 0.9rem;">Lire
+                                le mot du Président</a>
+                        </div>
+                        <!-- Photo -->
+                        <div class="president-teaser-image"
+                            style="flex: 1; max-width: 320px; min-width: 280px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border-radius: 12px; overflow: hidden; margin: 0 auto;">
+                            <img src="assets/images/president_clic_2026.jpg" alt="Mohamed BONI SENI"
+                                style="width: 100%; height: 100%; min-height: 350px; object-fit: cover; object-position: center 15%; display: block;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="section bg-african-pattern">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">+ 50</span>
+                        <span class="stat-label">Clubs</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">+ 10</span>
+                        <span class="stat-label">Villes couvertes</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">+ 50</span>
+                        <span class="stat-label">Actions par an</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">+ 700</span>
+                        <span class="stat-label">Rotariens engagés</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Causes -->
+        <section class="section bg-african-pattern">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: var(--space-lg);">Nos causes</h2>
+                <div class="causes-grid">
+                    <div class="cause-card">
+                        <div class="cause-img-container">
+                            <img src="assets/images/causes/peace.jpg" alt="Promotion de la Paix" loading="lazy">
+                        </div>
+                        <div class="cause-content">
+                            <h3><i class="fas fa-dove" style="color: var(--color-rotary-blue);"></i> Promotion de la
+                                Paix</h3>
+                            <p>Le Rotary agit pour prévenir les conflits, encourager le dialogue et bâtir une paix
+                                durable
+                                au sein des communautés et entre les nations.</p>
+                        </div>
+                    </div>
+                    <div class="cause-card">
+                        <div class="cause-img-container">
+                            <img src="assets/images/causes/disease.jpg" alt="Lutte contre les maladies" loading="lazy">
+                        </div>
+                        <div class="cause-content">
+                            <h3><i class="fas fa-heartbeat" style="color: var(--color-rotary-blue);"></i> Lutte contre
+                                les
+                                maladies</h3>
+                            <p>Nous soutenons la prévention, le traitement et le renforcement des systèmes de santé pour
+                                réduire les maladies et sauver des vies.</p>
+                        </div>
+                    </div>
+                    <div class="cause-card">
+                        <div class="cause-img-container">
+                            <img src="assets/images/causes/water.jpg"
+                                alt="Accès à l'eau, à l'assainissement et à l'hygiène" loading="lazy">
+                        </div>
+                        <div class="cause-content">
+                            <h3><i class="fas fa-water" style="color: var(--color-rotary-blue);"></i> Accès à l'eau, à
+                                l'assainissement et à l'hygiène</h3>
+                            <p>Le Rotary œuvre pour garantir à tous l'accès à une eau potable sûre, à l'assainissement
+                                et à
+                                de bonnes pratiques d'hygiène.</p>
+                        </div>
+                    </div>
+                    <div class="cause-card">
+                        <div class="cause-img-container">
+                            <img src="assets/images/causes/maternal_health.jpg" alt="Santé de la mère et de l'enfant"
+                                loading="lazy">
+                        </div>
+                        <div class="cause-content">
+                            <h3><i class="fas fa-baby" style="color: var(--color-rotary-blue);"></i> Santé de la mère et
+                                de
+                                l'enfant</h3>
+                            <p>Nous protégeons les mères et les enfants en améliorant l'accès aux soins, à la nutrition
+                                et à
+                                des services de santé de qualité.</p>
+                        </div>
+                    </div>
+                    <div class="cause-card">
+                        <div class="cause-img-container">
+                            <img src="assets/images/causes/education.jpg" alt="Éducation de base et alphabétisation"
+                                loading="lazy">
+                        </div>
+                        <div class="cause-content">
+                            <h3><i class="fas fa-book-reader" style="color: var(--color-rotary-blue);"></i> Éducation de
+                                base et alphabétisation</h3>
+                            <p>Le Rotary soutient l’éducation pour tous, renforce l’alphabétisation et accompagne les
+                                apprenants vers un avenir meilleur.</p>
+                        </div>
+                    </div>
+                    <div class="cause-card">
+                        <div class="cause-img-container">
+                            <img src="assets/images/causes/economy.jpg" alt="Développement économique et local"
+                                loading="lazy">
+                        </div>
+                        <div class="cause-content">
+                            <h3><i class="fas fa-hand-holding-usd" style="color: var(--color-rotary-blue);"></i>
+                                Développement économique et local</h3>
+                            <p>Nous favorisons l'autonomisation des communautés par l'entrepreneuriat, l'emploi et des
+                                initiatives économiques durables.</p>
+                        </div>
+                    </div>
+                    <div class="cause-card">
+                        <div class="cause-img-container">
+                            <img src="assets/images/causes/environment.jpg" alt="Protection de l'environnement"
+                                loading="lazy">
+                        </div>
+                        <div class="cause-content">
+                            <h3><i class="fas fa-tree" style="color: var(--color-rotary-blue);"></i> Protection de
+                                l’environnement</h3>
+                            <p>Le Rotary s’engage à préserver la planète à travers des actions concrètes contre le
+                                changement climatique et pour la protection des ressources naturelles.</p>
+                        </div>
+                    </div>
+                    <div class="cause-card">
+                        <div class="cause-img-container">
+                            <img src="assets/images/causes/polio.jpg" alt="En finir avec la Polio" loading="lazy">
+                        </div>
+                        <div class="cause-content">
+                            <h3><i class="fas fa-virus-slash" style="color: var(--color-accent);"></i> En finir avec la
+                                Polio</h3>
+                            <p>Le Rotary mène un combat historique pour éradiquer définitivement la poliomyélite et
+                                offrir à
+                                chaque enfant un avenir sans cette maladie.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rotary International Highlight -->
+        <section class="section section-bg-blue">
+            <div class="container" style="text-align: center;">
+                <h2>Le Rotary International</h2>
+                <p style="max-width: 700px; margin: 0 auto; margin-bottom: var(--space-md);">
+                    Le Rotary International est un réseau mondial de leaders engagés dans le service à autrui, la
+                    promotion de la paix et le développement durable des communautés.
+                </p>
+                <a href="rotary-international.html" class="btn btn-primary">En savoir plus sur le Rotary</a>
+            </div>
+        </section>
+
+        <!-- CTA Finding Club -->
+        <section class="section bg-african-pattern">
+            <div class="container" style="text-align: center;">
+                <h2>Envie de rejoindre un club Rotary ?</h2>
+                <p style="margin-bottom: var(--space-md); color: var(--color-text-muted);">
+                    Découvrez les clubs Rotary près de chez vous et engagez-vous au service de votre communauté.
+                </p>
+                <a href="clubs.html" class="btn btn-accent">Trouver un club</a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer" id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>CLIC Rotary Bénin</h4>
+                    <p>Unir pour servir.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Liens Rapides</h4>
+                    <ul>
+                        <li><a href="le-clic.html">Le CLIC</a></li>
+                        <li><a href="clubs.html">Les Clubs</a></li>
+                        <li><a href="rotary-international.html">Rotary International</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <p>Email: contact@clicrotarybenin.org</p>
+                    <!-- Socials placeholder -->
+                    <div style="margin-top: 1rem;">
+                        <i class="fab fa-facebook fa-lg" style="margin-right: 10px; cursor: pointer;"></i>
+                        <i class="fab fa-linkedin fa-lg" style="margin-right: 10px; cursor: pointer;"></i>
+                        <i class="fab fa-twitter fa-lg" style="cursor: pointer;"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <a href="admin/login.html" style="color: inherit; text-decoration: none; cursor: default;" title="Accès administrateur">2026</a> CLIC Rotary Bénin. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+</body>
+
+</html>

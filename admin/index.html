@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CLIC Rotary Admin</title>
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/admin.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-gear"></i> CLIC Rotary
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="index.html" class="nav-link active">
+                    <i class="fas fa-home"></i> Tableau de bord
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="clubs.html" class="nav-link">
+                    <i class="fas fa-users"></i> Clubs
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="actions.html" class="nav-link">
+                    <i class="fas fa-hand-holding-heart"></i> Actions
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="news.html" class="nav-link">
+                    <i class="fas fa-newspaper"></i> Actualités
+                </a>
+            </li>
+        </ul>
+        <a onclick="logout()" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </a>
+    </div>
+
+    <main class="main-content">
+        <header class="header">
+            <h1>Tableau de bord</h1>
+            <div class="user-info">Administrateur</div>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Clubs</h3>
+                <div class="value" id="count-clubs">...</div>
+            </div>
+            <div class="stat-card">
+                <h3>Actions Réalisées</h3>
+                <div class="value" id="count-actions">...</div>
+            </div>
+            <div class="stat-card">
+                <h3>Articles Publiés</h3>
+                <div class="value" id="count-news">...</div>
+            </div>
+        </div>
+
+        <div class="data-card">
+            <h2>Actions Récentes</h2>
+            <div id="recent-actions-list">Chargement...</div>
+        </div>
+    </main>
+
+    <script>
+        async function fetchStats() {
+            // Fetch Counts
+            const { count: clubsCount } = await supabaseClient.from('clubs').select('*', { count: 'exact', head: true });
+            const { count: actionsCount } = await supabaseClient.from('actions').select('*', { count: 'exact', head: true });
+            const { count: newsCount } = await supabaseClient.from('news').select('*', { count: 'exact', head: true });
+
+            document.getElementById('count-clubs').textContent = clubsCount || 0;
+            document.getElementById('count-actions').textContent = actionsCount || 0;
+            document.getElementById('count-news').textContent = newsCount || 0;
+
+            // Fetch Recent Actions
+            const { data: actions, error } = await supabase
+                .from('actions')
+                .select('title, status, created_at')
+                .order('created_at', { ascending: false })
+                .limit(5);
+
+            if (actions) {
+                const list = document.getElementById('recent-actions-list');
+                if (actions.length === 0) {
+                    list.textContent = "Aucune action récente.";
+                } else {
+                    list.innerHTML = `
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Statut</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${actions.map(a => `
+                                    <tr>
+                                        <td>${a.title}</td>
+                                        <td>${a.status}</td>
+                                        <td>${new Date(a.created_at).toLocaleDateString()}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchStats);
+    </script>
+</body>
+</html>

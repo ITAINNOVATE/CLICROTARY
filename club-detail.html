@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails du Club - CLIC Rotary Bénin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container nav-container">
+            <div class="brand-logo">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="CLIC Rotary Bénin" style="height: 200px;">
+                </a>
+            </div>
+            <div class="mobile-toggle" id="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="le-clic.html">Le CLIC</a></li>
+                    <li><a href="clubs.html" class="active">Les Clubs</a></li>
+                    <li><a href="actions.html">Actions</a></li>
+                    <li><a href="actualites.html">Actualités</a></li>
+                    <li><a href="rotary-international.html">Le Rotary</a></li>
+                    <li><a href="nous-rejoindre.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">👉
+                            Rejoindre</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <div id="club-detail-container">
+            <section class="page-header section-bg-blue" style="padding: var(--space-lg) 0; text-align: center;">
+                <div class="container">
+                    <h1 id="club-name" style="margin-bottom: 0.5rem;">Nom du Club</h1>
+                    <div
+                        style="display: flex; justify-content: center; gap: 1rem; align-items: center; color: rgba(255,255,255,0.9);">
+                        <span id="club-type"
+                            style="background: var(--color-rotary-gold); color: var(--color-rotary-blue); padding: 4px 12px; border-radius: 50px; font-weight: bold; font-size: 0.9rem;">Type</span>
+                        <span><i class="fas fa-map-marker-alt"></i> <span id="club-city">Ville</span></span>
+                        <span><i class="fas fa-hashtag"></i> RI: <span id="club-ri">00000</span></span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section bg-african-pattern">
+                <div class="container">
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start;">
+
+                        <!-- Col 1: Main Info & Meeting -->
+                        <div style="display: flex; flex-direction: column; gap: 2rem;">
+
+                            <!-- Key Stats -->
+                            <div class="grid-stats"
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                                <div class="stat-card"
+                                    style="text-align: center; padding: 1.5rem; background: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                    <i class="fas fa-birthday-cake fa-2x"
+                                        style="color: var(--color-rotary-blue); margin-bottom: 0.5rem;"></i>
+                                    <div style="font-size: 0.9rem; color: #666;">Création</div>
+                                    <div id="club-creation" style="font-weight: bold; font-size: 1.1rem;">-</div>
+                                </div>
+                                <div class="stat-card"
+                                    style="text-align: center; padding: 1.5rem; background: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                    <i class="fas fa-users fa-2x"
+                                        style="color: var(--color-rotary-gold); margin-bottom: 0.5rem;"></i>
+                                    <div style="font-size: 0.9rem; color: #666;">Membres</div>
+                                    <div id="club-members" style="font-weight: bold; font-size: 1.1rem;">-</div>
+                                </div>
+                            </div>
+
+                            <!-- Meeting Info -->
+                            <div class="info-box"
+                                style="background: white; border-left: 5px solid var(--color-rotary-blue); padding: 2rem; border-radius: 0 8px 8px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                                <h3
+                                    style="color: var(--color-rotary-blue); margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">
+                                    <i class="far fa-clock"></i> Réunions Statutaires
+                                </h3>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.2rem;">Quand ?
+                                        </div>
+                                        <div style="font-size: 1.1rem; font-weight: 500;">
+                                            <span id="club-meeting-day">-</span> à <span id="club-meeting-time">-</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.2rem;">Où ?</div>
+                                        <div id="club-meeting-place" style="font-size: 1.1rem; font-weight: 500;">-
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Club Contact -->
+                            <div class="info-box"
+                                style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                                <h3 style="margin-bottom: 1.5rem; color: #333;">Contacter le Club</h3>
+                                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <div
+                                            style="width: 40px; height: 40px; background: #f0f7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-rotary-blue);">
+                                            <i class="fas fa-envelope"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 0.9rem; color: #888;">Email Club</div>
+                                            <a id="club-email" href="#"
+                                                style="font-weight: 500; color: var(--color-rotary-blue); text-decoration: none;">-</a>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <div
+                                            style="width: 40px; height: 40px; background: #f0f7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-rotary-blue);">
+                                            <i class="fas fa-phone"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 0.9rem; color: #888;">Téléphone Club</div>
+                                            <a id="club-phone" href="#"
+                                                style="font-weight: 500; color: #333; text-decoration: none;">-</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Col 2: Officers -->
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+
+                            <!-- President Card -->
+                            <div
+                                style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-top: 4px solid var(--color-rotary-gold);">
+                                <div style="padding: 1.5rem; text-align: center; background: #fffcf5;">
+                                    <h4 style="margin: 0; color: var(--color-rotary-blue);">Président(e)</h4>
+                                </div>
+                                <div style="padding: 1.5rem; text-align: center;">
+                                    <div
+                                        style="width: 80px; height: 80px; background: #eee; border-radius: 50%; margin: 0 auto 1rem auto; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-user-tie fa-2x" style="color: #ccc;"></i>
+                                    </div>
+                                    <h3 id="president-name" style="font-size: 1.1rem; margin-bottom: 1rem;">-</h3>
+
+                                    <div
+                                        style="text-align: left; background: #f9f9f9; padding: 1rem; border-radius: 6px; font-size: 0.9rem;">
+                                        <div style="margin-bottom: 0.5rem;" id="pres-phone-container">
+                                            <i class="fas fa-phone fa-fw" style="color: #999;"></i> <a
+                                                id="president-phone" href="#"
+                                                style="color: #333; text-decoration: none;">-</a>
+                                        </div>
+                                        <div id="pres-email-container">
+                                            <i class="fas fa-envelope fa-fw" style="color: #999;"></i> <a
+                                                id="president-email" href="#"
+                                                style="color: #333; text-decoration: none;">-</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Secretary Card -->
+                            <div
+                                style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-top: 4px solid #999;">
+                                <div style="padding: 1rem; text-align: center; background: #f5f5f5;">
+                                    <h4 style="margin: 0; color: #333;">Secrétaire</h4>
+                                </div>
+                                <div style="padding: 1.5rem;">
+                                    <h3 id="secretary-name"
+                                        style="font-size: 1rem; margin-bottom: 0.5rem; text-align: center;">-</h3>
+                                    <div style="text-align: center;">
+                                        <i class="fas fa-phone fa-fw" style="color: #999;"></i> <a id="secretary-phone"
+                                            href="#"
+                                            style="color: #666; text-decoration: none; font-size: 0.9rem;">-</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div style="text-align: center; margin-top: 3rem;">
+                        <a href="clubs.html" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Retour à l'annuaire
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; <a href="admin/login.html" style="color: inherit; text-decoration: none; cursor: default;" title="Accès administrateur">2026</a> CLIC Rotary Bénin. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détail de l'Action - CLIC Rotary Bénin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* --- Action Detail Specific Styles --- */
+        .action-detail-hero {
+            position: relative;
+            width: 100%;
+            height: 460px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+            background: #1a1a2e;
+        }
+        .action-detail-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+        }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%);
+            display: flex;
+            align-items: flex-end;
+            padding: 2.5rem;
+        }
+        .hero-badges {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.45rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            backdrop-filter: blur(8px);
+        }
+        .hero-badge.status { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); }
+        .hero-badge.domain { background: rgba(0,93,170,0.7); color: white; }
+        .hero-badge.year { background: rgba(217,27,92,0.7); color: white; }
+
+        /* Info grid */
+        .action-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+        .meta-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+        .meta-card .meta-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-rotary-blue);
+        }
+        .meta-card .meta-label { font-size: 0.75rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+        .meta-card .meta-value { font-weight: 700; font-size: 0.95rem; }
+
+        /* Layout */
+        .detail-layout {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+        @media (max-width: 768px) {
+            .detail-layout { grid-template-columns: 1fr; }
+            .action-detail-hero { height: 260px; }
+        }
+
+        /* Content blocks */
+        .content-section { margin-bottom: 2.5rem; }
+        .content-section h2 {
+            font-size: 1.3rem;
+            color: var(--color-rotary-blue);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--color-rotary-gold, #FFD700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .content-section p, .content-section li { line-height: 1.8; color: #444; }
+        .content-section ul { list-style: none; padding: 0; }
+        .content-section ul li { 
+            padding: 0.6rem 0; 
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .content-section ul li strong { color: #333; }
+
+        /* Sidebar */
+        .sidebar-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            margin-bottom: 1.5rem;
+        }
+        .sidebar-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--color-rotary-blue);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .sidebar-card p { font-size: 0.9rem; color: #555; line-height: 1.7; }
+
+        /* Photo gallery */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+        }
+        .photo-gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 4/3;
+            background: #eee;
+        }
+        .photo-gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .photo-gallery-item:hover img { transform: scale(1.05); }
+
+        /* Lightbox */
+        #lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        #lightbox.open { display: flex; }
+        #lightbox img { max-width: 90vw; max-height: 88vh; border-radius: 8px; object-fit: contain; }
+        #lightbox-close { position: absolute; top: 1.5rem; right: 2rem; color: white; font-size: 2rem; cursor: pointer; }
+
+        /* Description headings styling */
+        .desc-heading {
+            display: inline-block;
+            margin: 1.5rem 0 0.8rem 0;
+            padding: 0.4rem 1.2rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .desc-heading.problem {
+            background-color: #ffebee;
+            color: #d32f2f;
+            border-left: 4px solid #d32f2f;
+        }
+        .desc-heading.description {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            border-left: 4px solid #1976d2;
+        }
+        .desc-by {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #777;
+            border-bottom: 2px dashed #eee;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container nav-container">
+            <div class="brand-logo">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="CLIC Rotary Bénin" style="height: 150px;">
+                </a>
+            </div>
+            <div class="mobile-toggle" id="mobile-toggle"><i class="fas fa-bars"></i></div>
+            <nav>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="le-clic.html">Le CLIC</a></li>
+                    <li><a href="clubs.html">Les Clubs</a></li>
+                    <li><a href="actions.html" class="active">Actions</a></li>
+                    <li><a href="actualites.html">Actualités</a></li>
+                    <li><a href="rotary-international.html">Le Rotary</a></li>
+                    <li><a href="nous-rejoindre.html" class="btn btn-primary" style="padding: 0.5rem 1rem;">👉 Rejoindre</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="action-detail-container" class="section bg-african-pattern">
+        <div class="container">
+            <a href="actions.html" style="display: inline-block; margin-bottom: 2rem; color: var(--color-text-muted);">
+                <i class="fas fa-arrow-left"></i> Retour aux actions
+            </a>
+
+            <div id="loading-message" style="text-align: center; padding: 4rem;">Chargement des détails...</div>
+
+            <article id="action-content" style="display: none;">
+
+                <!-- HERO IMAGE -->
+                <div class="action-detail-hero">
+                    <img id="detail-image" src="" alt="Image de l'action">
+                    <div class="hero-overlay">
+                        <div class="hero-badges">
+                            <span id="detail-status" class="hero-badge status"></span>
+                            <span id="detail-domain" class="hero-badge domain"></span>
+                            <span id="detail-year" class="hero-badge year"><i class="fas fa-calendar-alt"></i> <span id="detail-year-text"></span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TITLE & QUICK INFO -->
+                <div style="text-align: center; margin-bottom: 2rem; margin-top: 1.5rem;">
+                    <h1 id="detail-title" style="font-size: 2.5rem; margin-bottom: 0.75rem;"></h1>
+                    <p style="color: var(--color-text-muted); font-size: 1.1rem;">
+                        <i class="fas fa-users" style="color: var(--color-rotary-blue);"></i>
+                        Club porteur : <strong id="detail-club" style="color: var(--color-rotary-blue);"></strong>
+                    </p>
+                </div>
+
+                <!-- META CARDS -->
+                <div class="action-meta-grid">
+                    <div class="meta-card">
+                        <div class="meta-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="meta-label">Lieu</div>
+                        <div class="meta-value" id="detail-location">-</div>
+                    </div>
+                    <div class="meta-card">
+                        <div class="meta-icon"><i class="fas fa-calendar"></i></div>
+                        <div class="meta-label">Année</div>
+                        <div class="meta-value" id="detail-date">-</div>
+                    </div>
+                    <div class="meta-card">
+                        <div class="meta-icon"><i class="fas fa-users"></i></div>
+                        <div class="meta-label">Bénéficiaires</div>
+                        <div class="meta-value" id="detail-beneficiaries-short">-</div>
+                    </div>
+                    <div class="meta-card">
+                        <div class="meta-icon"><i class="fas fa-tag"></i></div>
+                        <div class="meta-label">Domaine</div>
+                        <div class="meta-value" id="detail-domain-card">-</div>
+                    </div>
+                </div>
+
+                <!-- PHOTO GALLERY (shown only if extra photos exist) -->
+                <div id="gallery-section" style="display:none;" class="content-section">
+                    <h2><i class="fas fa-images"></i> Galerie Photos</h2>
+                    <div class="photo-gallery" id="photo-gallery"></div>
+                </div>
+
+                <!-- MAIN LAYOUT -->
+                <div class="detail-layout">
+                    <!-- Description -->
+                    <div class="content-section" style="text-align: center;">
+                        <h2><i class="fas fa-align-left"></i> Description</h2>
+                        <div id="detail-description" style="white-space: pre-line; line-height: 1.9; color: #444; font-size: 1.1rem;"></div>
+                    </div>
+
+                    <!-- Impact & Results -->
+                    <div class="content-section" id="impact-section" style="text-align: center;">
+                        <h2><i class="fas fa-chart-bar"></i> Impact & Résultats</h2>
+                        <ul style="max-width: 600px; margin: 0 auto;">
+                            <li id="li-beneficiaries" style="display:none;"><strong>Bénéficiaires :</strong> <span id="detail-beneficiaries"></span></li>
+                            <li id="li-results" style="display:none;"><strong>Résultats :</strong> <span id="detail-results"></span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Partners -->
+                    <div class="sidebar-card" id="partners-card" style="display:none; text-align: center; margin-bottom: 3rem;">
+                        <h3 style="justify-content: center;"><i class="fas fa-handshake"></i> Partenaires</h3>
+                        <p id="detail-partners" style="font-size: 1rem;"></p>
+                    </div>
+                </div>
+
+            </article>
+        </div>
+    </main>
+
+    <!-- Lightbox -->
+    <div id="lightbox">
+        <span id="lightbox-close" onclick="document.getElementById('lightbox').classList.remove('open')">&times;</span>
+        <img id="lightbox-img" src="" alt="Photo">
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer" id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>CLIC Rotary Bénin</h4>
+                    <p>Unir pour servir.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Liens Rapides</h4>
+                    <ul>
+                        <li><a href="actions.html">Actions</a></li>
+                        <li><a href="proposer-action.html">Proposer une action</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <p>Email: contact@clicrotarybenin.org</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <a href="admin/login.html" style="color: inherit; text-decoration: none; cursor: default;" title="Accès administrateur">2026</a> CLIC Rotary Bénin. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+
+    <script>
+        // Lightbox
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').classList.add('open');
+        }
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('open');
+        });
+    </script>
+</body>
+
+</html>

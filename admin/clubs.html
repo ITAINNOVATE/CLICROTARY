@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Clubs - CLIC Rotary Admin</title>
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/admin.js"></script>
+    <style>
+        .form-section-title {
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #ddd;
+            color: var(--color-rotary-blue, #005DAA);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo"><i class="fas fa-gear"></i> CLIC Rotary</div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Tableau de bord</a></li>
+            <li class="nav-item"><a href="clubs.html" class="nav-link active"><i class="fas fa-users"></i> Clubs</a></li>
+            <li class="nav-item"><a href="actions.html" class="nav-link"><i class="fas fa-hand-holding-heart"></i> Actions</a></li>
+            <li class="nav-item"><a href="news.html" class="nav-link"><i class="fas fa-newspaper"></i> Actualités</a></li>
+        </ul>
+        <a onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+    </div>
+
+    <main class="main-content">
+        <header class="header">
+            <h1>Gestion des Clubs</h1>
+            <button class="btn btn-primary" onclick="openModal()">+ Ajouter un Club</button>
+        </header>
+
+        <div class="data-card">
+            <table class="data-table" id="clubs-table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Type</th>
+                        <th>Ville</th>
+                        <th>N° RI</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="clubs-tbody">
+                    <tr><td colspan="5">Chargement...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Modal Form (Hidden by default) -->
+    <div id="club-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; overflow-y:auto;">
+        <div style="background:white; margin:2% auto; padding:2rem; width:95%; max-width:800px; border-radius:8px;">
+            <h2 id="modal-title">Nouveau Club</h2>
+            <form id="club-form" style="margin-top:1.5rem;">
+                <input type="hidden" id="club-id">
+
+                <h3 class="form-section-title">Informations Générales</h3>
+                <div class="stats-grid" style="grid-template-columns:1fr 1fr;">
+                    <div class="form-group">
+                        <label>Nom du Club</label>
+                        <input type="text" id="club-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select id="club-type" required style="width:100%; padding:0.75rem; border:1px solid #ddd; border-radius:4px;">
+                            <option value="Rotary">Rotary</option>
+                            <option value="Rotaract">Rotaract</option>
+                            <option value="Interact">Interact</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ville</label>
+                        <input type="text" id="club-city" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date de Création (Texte)</label>
+                        <input type="text" id="club-creation" placeholder="Ex: 14 mars 1985">
+                    </div>
+                    <div class="form-group">
+                        <label>N° RI</label>
+                        <input type="text" id="club-ri">
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre de Membres</label>
+                        <input type="number" id="club-members">
+                    </div>
+                </div>
+
+                <h3 class="form-section-title">Coordonnées & Réunion</h3>
+                <div class="stats-grid" style="grid-template-columns:1fr 1fr;">
+                    <div class="form-group">
+                        <label>Email du Club</label>
+                        <input type="email" id="club-email">
+                    </div>
+                    <div class="form-group">
+                        <label>Téléphone Global</label>
+                        <input type="text" id="club-phone">
+                    </div>
+                </div>
+                <div class="stats-grid" style="grid-template-columns:1fr 1fr 1fr;">
+                    <div class="form-group">
+                        <label>Jour de Réunion</label>
+                        <input type="text" id="club-meeting-day" placeholder="Ex: Jeudi">
+                    </div>
+                    <div class="form-group">
+                        <label>Heure</label>
+                        <input type="text" id="club-meeting-time" placeholder="Ex: 19h30">
+                    </div>
+                    <div class="form-group">
+                        <label>Lieu</label>
+                        <input type="text" id="club-place">
+                    </div>
+                </div>
+                
+                <h3 class="form-section-title">Membres du Bureau</h3>
+                <div class="stats-grid" style="grid-template-columns:1fr 1fr;">
+                    <div class="form-group">
+                        <label>Nom du Président(e)</label>
+                        <input type="text" id="president-name">
+                    </div>
+                    <div class="form-group">
+                        <label>Téléphone du Président(e)</label>
+                        <input type="text" id="president-phone">
+                    </div>
+                    <div class="form-group">
+                        <label>Email du Président(e)</label>
+                        <input type="email" id="president-email">
+                    </div>
+                     <div class="form-group">
+                        <label>Image de Couverture (URL)</label>
+                        <input type="text" id="club-image" placeholder="Ex: https://lien-image.jpg">
+                    </div>
+                </div>
+                <div class="stats-grid" style="grid-template-columns:1fr 1fr;">
+                    <div class="form-group">
+                        <label>Nom du Secrétaire</label>
+                        <input type="text" id="secretary-name">
+                    </div>
+                    <div class="form-group">
+                        <label>Téléphone du Secrétaire</label>
+                        <input type="text" id="secretary-phone">
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:1rem; margin-top:2rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const tbody = document.getElementById('clubs-tbody');
+        const modal = document.getElementById('club-modal');
+        const form = document.getElementById('club-form');
+
+        async function fetchClubs() {
+            const { data, error } = await supabaseClient.from('clubs').select('*').order('name');
+            if (data) {
+                tbody.innerHTML = data.map(club => `
+                    <tr>
+                        <td>${club.name}</td>
+                        <td>${club.type}</td>
+                        <td>${club.city}</td>
+                        <td>${club.ri_number || '-'}</td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" onclick='openModal(${JSON.stringify(club).replace(/'/g, "&apos;")})'>Editer</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteClub(${club.id})">Supprimer</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function openModal(club = null) {
+            modal.style.display = 'block';
+            if (club) {
+                document.getElementById('modal-title').textContent = "Modifier le Club";
+                document.getElementById('club-id').value = club.id;
+                document.getElementById('club-name').value = club.name;
+                document.getElementById('club-type').value = club.type;
+                document.getElementById('club-city').value = club.city;
+                document.getElementById('club-creation').value = club.creation_date || '';
+                document.getElementById('club-ri').value = club.ri_number || '';
+                document.getElementById('club-members').value = club.members || '';
+                
+                document.getElementById('club-email').value = club.email || '';
+                document.getElementById('club-phone').value = club.phone || '';
+                document.getElementById('club-meeting-day').value = club.meeting_day || '';
+                document.getElementById('club-meeting-time').value = club.meeting_time || '';
+                document.getElementById('club-place').value = club.meeting_place || '';
+                document.getElementById('club-image').value = club.image_url || '';
+
+                document.getElementById('president-name').value = club.president?.name || '';
+                document.getElementById('president-phone').value = club.president?.phone || '';
+                document.getElementById('president-email').value = club.president?.email || '';
+
+                document.getElementById('secretary-name').value = club.secretary?.name || '';
+                document.getElementById('secretary-phone').value = club.secretary?.phone || '';
+            } else {
+                document.getElementById('modal-title').textContent = "Nouveau Club";
+                form.reset();
+                document.getElementById('club-id').value = '';
+            }
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('club-id').value;
+            
+            const clubData = {
+                name: document.getElementById('club-name').value,
+                type: document.getElementById('club-type').value,
+                city: document.getElementById('club-city').value,
+                creation_date: document.getElementById('club-creation').value,
+                ri_number: document.getElementById('club-ri').value,
+                members: parseInt(document.getElementById('club-members').value) || 0,
+                email: document.getElementById('club-email').value,
+                phone: document.getElementById('club-phone').value,
+                meeting_day: document.getElementById('club-meeting-day').value,
+                meeting_time: document.getElementById('club-meeting-time').value,
+                meeting_place: document.getElementById('club-place').value,
+                image_url: document.getElementById('club-image').value,
+                president: {
+                    name: document.getElementById('president-name').value,
+                    phone: document.getElementById('president-phone').value,
+                    email: document.getElementById('president-email').value
+                },
+                secretary: {
+                    name: document.getElementById('secretary-name').value,
+                    phone: document.getElementById('secretary-phone').value
+                }
+            };
+
+            const { error } = id 
+                ? await supabaseClient.from('clubs').update(clubData).eq('id', id)
+                : await supabaseClient.from('clubs').insert([clubData]);
+
+            if (error) alert("Erreur: " + error.message);
+            else {
+                closeModal();
+                fetchClubs();
+            }
+        };
+
+        async function deleteClub(id) {
+            if (confirm("Supprimer ce club ?")) {
+                const { error } = await supabaseClient.from('clubs').delete().eq('id', id);
+                if (error) alert("Erreur: " + error.message);
+                else fetchClubs();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchClubs);
+    </script>
+</body>
+</html>
