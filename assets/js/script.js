@@ -1,13 +1,20 @@
 // Supabase Configuration
 const supabaseUrl = 'https://acgwbbadiauuuazaltho.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFjZ3diYmFkaWF1dXVhemFsdGhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4MDkzMDIsImV4cCI6MjA5MDM4NTMwMn0.zCjbV8gNrbUISxASzTPx82GkjcpkTszADeErytVIb_Y';
-const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+let supabaseClient;
 
 let clubsData = [];
 let newsData = [];
 let actionsData = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize Supabase if available
+    if (window.supabase) {
+        supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+    } else {
+        console.warn("Supabase library not loaded. Database functions will be disabled.");
+    }
+
     // --- Smart Page Detection: only fetch what this page needs ---
     const page = window.location.pathname.split('/').pop() || 'index.html';
     const needsClubs   = ['index.html', 'clubs.html', 'club-detail.html', 'actions.html', ''].includes(page);
@@ -15,9 +22,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const needsNews    = ['index.html', 'actualites.html', 'actualite-detail.html', ''].includes(page);
 
     const fetches = [];
-    if (needsClubs)   fetches.push(supabaseClient.from('clubs').select('*').order('name'));
-    if (needsActions) fetches.push(supabaseClient.from('actions').select('*, clubs(name)').eq('is_approved', true).order('year', { ascending: false }));
-    if (needsNews)    fetches.push(supabaseClient.from('news').select('*').order('created_at', { ascending: false }));
+    if (supabaseClient) {
+        if (needsClubs)   fetches.push(supabaseClient.from('clubs').select('*').order('name'));
+        if (needsActions) fetches.push(supabaseClient.from('actions').select('*, clubs(name)').eq('is_approved', true).order('year', { ascending: false }));
+        if (needsNews)    fetches.push(supabaseClient.from('news').select('*').order('created_at', { ascending: false }));
+    }
 
     // Run all needed queries in parallel
     const results = await Promise.all(fetches);
@@ -204,8 +213,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             setText('club-phone', club.phone || 'Non renseigné');
 
             // President
-            if (club.president) {
-                setText('president-name', club.president.name || 'Non renseigné');
+            const presNameEl = document.getElementById('president-name');
+            if (club.president && presNameEl) {
+                presNameEl.textContent = club.president.name || 'Non renseigné';
                 updateLink('president-phone', club.president.phone, 'tel:' + (club.president.phone || '').replace(/\s/g, ''));
                 setText('president-phone', club.president.phone || '-');
                 updateLink('president-email', club.president.email, 'mailto:' + club.president.email);
@@ -213,8 +223,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             // Secretary
-            if (club.secretary) {
-                setText('secretary-name', club.secretary.name || 'Non renseigné');
+            const secNameEl = document.getElementById('secretary-name');
+            if (club.secretary && secNameEl) {
+                secNameEl.textContent = club.secretary.name || 'Non renseigné';
                 updateLink('secretary-phone', club.secretary.phone, 'tel:' + (club.secretary.phone || '').replace(/\s/g, ''));
                 setText('secretary-phone', club.secretary.phone || '-');
             }
@@ -287,7 +298,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     window.filterActions = function() {
-        if (!actionsGrid) return;
+        if (!actionsGrid || !actionFilterType || !actionFilterClub || !actionFilterYear || !actionFilterStatus) return;
         const typeVal = actionFilterType.value;
         const clubVal = actionFilterClub.value;
         const yearVal = actionFilterYear.value;
@@ -412,7 +423,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
         } else {
-            document.getElementById('loading-message').textContent = 'Action non trouvée.';
+            const loadingEl = document.getElementById('loading-message');
+            if (loadingEl) loadingEl.textContent = 'Action non trouvée.';
         }
     }
 
@@ -489,8 +501,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (newsId) {
             const item = newsData.find(n => String(n.id) === String(newsId));
             if (item) {
-                document.getElementById('loading-message').style.display = 'none';
-                document.getElementById('news-content').style.display = 'block';
+                const loadingMsgEl = document.getElementById('loading-message');
+                const newsContentEl = document.getElementById('news-content');
+                if (loadingMsgEl) loadingMsgEl.style.display = 'none';
+                if (newsContentEl) newsContentEl.style.display = 'block';
 
                 setText('detail-category', item.category || 'Actualité');
                 setText('detail-date', item.date || new Date().toISOString().split('T')[0]);
@@ -502,7 +516,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const textEl = document.getElementById('detail-text');
                 if (textEl) textEl.innerHTML = item.content; // Use innerHTML for text editor content
             } else {
-                document.getElementById('loading-message').textContent = 'Article non trouvé.';
+                const loadingMsgEl = document.getElementById('loading-message');
+                if (loadingMsgEl) loadingMsgEl.textContent = 'Article non trouvé.';
             }
         }
     }

@@ -1071,3 +1071,32 @@ h3 {
     color: var(--color-text-muted);
     font-weight: 500;
 }
+
+/* President Message Grid */
+.president-msg-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-lg);
+    align-items: start;
+}
+
+@media (max-width: 768px) {
+    .president-msg-grid {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: var(--space-md);
+    }
+    
+    .president-msg-grid h2 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    
+    .president-msg-grid p {
+        text-align: justify;
+    }
+
+    .president-msg-grid > div:first-child {
+        margin-top: 1rem;
+    }
+}
