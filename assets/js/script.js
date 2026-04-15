@@ -1,18 +1,20 @@
-// Supabase Configuration
-const supabaseUrl = 'https://acgwbbadiauuuazaltho.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFjZ3diYmFkaWF1dXVhemFsdGhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4MDkzMDIsImV4cCI6MjA5MDM4NTMwMn0.zCjbV8gNrbUISxASzTPx82GkjcpkTszADeErytVIb_Y';
-let supabaseClient;
+// ============================================
+// CLIC Rotary — Script Principal
+// Connecté à ITA-CORE (multi-tenant)
+// L'ancien projet Supabase est désormais inutilisé.
+// ============================================
 
 let clubsData = [];
 let newsData = [];
 let actionsData = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Initialize Supabase if available
-    if (window.supabase) {
-        supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-    } else {
-        console.warn("Supabase library not loaded. Database functions will be disabled.");
+    // Initialisation du client ITA-CORE (défini dans supabase-config.js)
+    const supabaseClient = initItaCoreClient();
+    const PLATFORM_ID = ITA_CORE_CONFIG.PLATFORM_ID;
+
+    if (!supabaseClient) {
+        console.warn('[CLIC Rotary] ⚠️ Client Supabase ITA-CORE non disponible.');
     }
 
     // --- Smart Page Detection: only fetch what this page needs ---
@@ -23,9 +25,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const fetches = [];
     if (supabaseClient) {
-        if (needsClubs)   fetches.push(supabaseClient.from('clubs').select('*').order('name'));
-        if (needsActions) fetches.push(supabaseClient.from('actions').select('*, clubs(name)').eq('is_approved', true).order('year', { ascending: false }));
-        if (needsNews)    fetches.push(supabaseClient.from('news').select('*').order('created_at', { ascending: false }));
+        // Toutes les requêtes filtrent par platform_id (multi-tenant ITA-CORE)
+        if (needsClubs)   fetches.push(supabaseClient.from('clubs').select('*').eq('platform_id', PLATFORM_ID).order('name'));
+        if (needsActions) fetches.push(supabaseClient.from('actions').select('*, clubs(name)').eq('platform_id', PLATFORM_ID).eq('is_approved', true).order('year', { ascending: false }));
+        if (needsNews)    fetches.push(supabaseClient.from('news').select('*').eq('platform_id', PLATFORM_ID).order('created_at', { ascending: false }));
     }
 
     // Run all needed queries in parallel
@@ -504,6 +507,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (newsGrid) {
         window.renderNews(newsData);
+    }
+
+    // --- PRODUCTS: Chargement automatique depuis ITA-CORE ---
+    if (typeof loadProducts === 'function') {
+        loadProducts().catch(err => {
+            console.error('[CLIC Rotary] ⚠️ Erreur chargement produits (non bloquant):', err);
+        });
     }
 
     // Render News Detail
