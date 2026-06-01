@@ -520,12 +520,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         // On duplique les données pour forcer l'animation en boucle (même s'il y a peu d'articles)
         let displayNews = [...newsData];
-        while (displayNews.length < 18) { // On s'assure d'avoir au moins 3 pages de 6
+        while (displayNews.length < 9) { // On s'assure d'avoir au moins 3 pages de 3
             displayNews = [...displayNews, ...newsData];
         }
         
-        // Grouper les actualités par pages de 6 (2 lignes x 3 colonnes)
-        const chunkSize = 6;
+        // Grouper les actualités par pages de 3 (1 ligne x 3 colonnes)
+        const chunkSize = 3;
         const chunks = [];
         for (let i = 0; i < displayNews.length; i += chunkSize) {
             chunks.push(displayNews.slice(i, i + chunkSize));
