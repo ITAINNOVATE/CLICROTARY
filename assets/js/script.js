@@ -292,7 +292,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const imageUrl = action.image || 'https://via.placeholder.com/600x400?text=Pas+d%27image';
 
             card.innerHTML = `
-            <div class="action-image" style="background-image: url('${imageUrl}'); background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #111;"> 
+            <div class="action-image">
+                <div class="img-blur-bg" style="background-image: url('${imageUrl}');"></div>
+                <img src="${imageUrl}" alt="${action.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=Image'">
                 <div class="action-status ${statusClass}">${action.status || 'En cours'}</div>
             </div>
             <div class="action-content">
@@ -460,7 +462,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const formattedDate = item.date || new Date().toISOString().split('T')[0];
             card.innerHTML = `
                 <div class="action-image">
-                    <img src="${imageUrl}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="img-blur-bg" style="background-image: url('${imageUrl}');"></div>
+                    <img src="${imageUrl}" alt="${item.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=Image'">
                     <div class="action-status status-avenir" style="background: var(--color-rotary-blue);">${item.category || 'Actualité'}</div>
                 </div>
                 <div class="action-content">
