@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const imageUrl = action.image || 'https://via.placeholder.com/600x400?text=Pas+d%27image';
 
             card.innerHTML = `
-            <div class="action-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;"> 
+            <div class="action-image" style="background-image: url('${imageUrl}'); background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #111;"> 
                 <div class="action-status ${statusClass}">${action.status || 'En cours'}</div>
             </div>
             <div class="action-content">
