@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const imageUrl = action.image || 'https://via.placeholder.com/600x400?text=Pas+d%27image';
 
             card.innerHTML = `
-            <div class="action-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center; height: 200px;"> 
+            <div class="action-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;"> 
                 <div class="action-status ${statusClass}">${action.status || 'En cours'}</div>
             </div>
             <div class="action-content">
@@ -459,7 +459,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Assume date format is YYYY-MM-DD
             const formattedDate = item.date || new Date().toISOString().split('T')[0];
             card.innerHTML = `
-                <div class="action-image" style="height: 200px; overflow: hidden;">
+                <div class="action-image">
                     <img src="${imageUrl}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover;">
                     <div class="action-status status-avenir" style="background: var(--color-rotary-blue);">${item.category || 'Actualité'}</div>
                 </div>
