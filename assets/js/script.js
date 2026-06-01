@@ -583,5 +583,36 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
     }
+    // --- STATS ANIMATION (Count-up) ---
+    const statsGrid = document.querySelector('.stats-grid');
+    if (statsGrid) {
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                const statNumbers = document.querySelectorAll('.stat-number.count-up');
+                statNumbers.forEach(stat => {
+                    const target = +stat.getAttribute('data-target');
+                    const pad = stat.getAttribute('data-pad') === 'true';
+                    const duration = 2000; // 2 seconds
+                    const increment = target / (duration / 16); // ~60 FPS
+                    let current = 0;
+                    
+                    const updateStat = () => {
+                        current += increment;
+                        if (current < target) {
+                            const val = Math.ceil(current);
+                            stat.textContent = '+ ' + (pad && val < 10 ? '0' + val : val);
+                            requestAnimationFrame(updateStat);
+                        } else {
+                            stat.textContent = '+ ' + (pad && target < 10 ? '0' + target : target);
+                        }
+                    };
+                    updateStat();
+                });
+                observer.disconnect(); // Animate only once
+            }
+        }, { threshold: 0.5 });
+        
+        observer.observe(statsGrid);
+    }
 
 });
