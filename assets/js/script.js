@@ -44,6 +44,40 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    // Fermeture automatique du menu lors du retour arrière (bfcache)
+    window.addEventListener('pageshow', () => {
+        const navLinks = document.getElementById('nav-links');
+        const toggleBtn = document.getElementById('mobile-toggle');
+        if (navLinks && navLinks.classList.contains('active')) {
+            navLinks.classList.remove('active');
+            if (toggleBtn) {
+                const icon = toggleBtn.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        }
+    });
+
+    // Fermeture du menu lorsqu'on clique sur un lien (particulièrement utile pour les ancres ou le retour arrière)
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            const navLinks = document.getElementById('nav-links');
+            const toggleBtn = document.getElementById('mobile-toggle');
+            if (navLinks && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                if (toggleBtn) {
+                    const icon = toggleBtn.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                }
+            }
+        });
+    });
+
     // --- Smart Page Detection: only fetch what this page needs ---
     const page = window.location.pathname.split('/').pop() || 'index.html';
     const needsClubs   = ['index.html', 'clubs.html', 'club-detail.html', 'actions.html', ''].includes(page);
