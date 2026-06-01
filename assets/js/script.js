@@ -509,40 +509,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (newsGrid) {
-        window.renderNews(newsData);
-    }
-
-    // --- HOME NEWS SLIDER (Grid 3x2 Animée) ---
-    const newsSliderContainer = document.getElementById('home-news-slider');
-    if (newsSliderContainer && newsData && newsData.length > 0) {
-        let currentSlide = 0;
-        const dotsContainer = document.getElementById('slider-dots');
-        
-        // On duplique les données pour forcer l'animation en boucle (même s'il y a peu d'articles)
+           // --- HOME NEWS TICKER (Défilement continu) ---
+    const newsTickerContainer = document.getElementById('home-news-ticker');
+    if (newsTickerContainer && newsData && newsData.length > 0) {
+        // Pour un défilement infini sans coupure, on duplique la liste d'actualités exactement 1 fois
+        // (Ou plus si on a très peu d'actualités pour remplir l'écran)
         let displayNews = [...newsData];
-        while (displayNews.length < 9) { // On s'assure d'avoir au moins 3 pages de 3
+        while (displayNews.length < 8) {
             displayNews = [...displayNews, ...newsData];
         }
         
-        // Grouper les actualités par pages de 3 (1 ligne x 3 colonnes)
-        const chunkSize = 3;
-        const chunks = [];
-        for (let i = 0; i < displayNews.length; i += chunkSize) {
-            chunks.push(displayNews.slice(i, i + chunkSize));
-        }
+        // On crée un set double pour que l'animation translateX(-50%) soit parfaitement fluide
+        const tickerNews = [...displayNews, ...displayNews];
         
-        // Créer les slides
-        chunks.forEach((chunk, index) => {
-            const slide = document.createElement('div');
-            slide.className = 'slider-slide-grid';
+        tickerNews.forEach((news) => {
+            const imageUrl = news.image || 'https://via.placeholder.com/800x800?text=Image';
+            const formattedDate = news.date || new Date().toISOString().split('T')[0];
+            const summary = news.summary ? (news.summary.length > 80 ? news.summary.substring(0, 80) + '...' : news.summary) : '';
             
-            chunk.forEach(news => {
-                const imageUrl = news.image || 'https://via.placeholder.com/800x800?text=Image';
-                const formattedDate = news.date || new Date().toISOString().split('T')[0];
-                const summary = news.summary ? (news.summary.length > 80 ? news.summary.substring(0, 80) + '...' : news.summary) : '';
-                
-                // Design de carte identique à la page actualités, mais textes légèrement plus compacts
-                const cardHtml = `
+            const cardHtml = `
+                <div class="news-ticker-item">
                     <div class="action-card" style="margin: 0; height: 100%; display: flex; flex-direction: column;">
                         <div class="action-image">
                             <div class="img-blur-bg" style="background-image: url('${imageUrl}');"></div>
@@ -560,60 +546,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                             </div>
                         </div>
                     </div>
-                `;
-                slide.innerHTML += cardHtml;
-            });
-            
-            newsSliderContainer.appendChild(slide);
-            
-            // Points de navigation
-            const dot = document.createElement('div');
-            dot.style.width = '12px';
-            dot.style.height = '12px';
-            dot.style.borderRadius = '50%';
-            dot.style.background = index === 0 ? 'var(--color-rotary-gold)' : 'rgba(255,255,255,0.5)';
-            dot.style.cursor = 'pointer';
-            dot.style.transition = 'background 0.3s';
-            dot.addEventListener('click', () => goToSlide(index));
-            dotsContainer.appendChild(dot);
+                </div>
+            `;
+            newsTickerContainer.innerHTML += cardHtml;
         });
-
-        const updateSlider = () => {
-            newsSliderContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
-            const dots = dotsContainer.children;
-            for (let i = 0; i < dots.length; i++) {
-                dots[i].style.background = i === currentSlide ? 'var(--color-rotary-gold)' : 'rgba(255,255,255,0.5)';
-            }
-        };
-
-        const nextSlide = () => {
-            currentSlide = (currentSlide + 1) % chunks.length;
-            updateSlider();
-        };
-
-        const prevSlide = () => {
-            currentSlide = (currentSlide - 1 + chunks.length) % chunks.length;
-            updateSlider();
-        };
-
-        const goToSlide = (index) => {
-            currentSlide = index;
-            updateSlider();
-            resetInterval();
-        };
-
-        // Tourne en boucle toutes les 5 secondes
-        let slideInterval = setInterval(nextSlide, 5000);
-        
-        const resetInterval = () => {
-            clearInterval(slideInterval);
-            slideInterval = setInterval(nextSlide, 5000);
-        };
-
-        const nextBtn = document.getElementById('slider-next');
-        const prevBtn = document.getElementById('slider-prev');
-        if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); resetInterval(); });
-        if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); resetInterval(); });
     }
 
     // Render News Detail

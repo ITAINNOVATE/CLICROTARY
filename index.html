@@ -289,40 +289,33 @@
                 </div>
                 
                 <style>
-                    .slider-slide-grid {
-                        display: grid;
-                        grid-template-columns: repeat(1, 1fr);
-                        gap: 20px;
+                    .news-ticker-wrapper {
                         width: 100%;
+                        overflow: hidden;
+                        position: relative;
+                        padding-bottom: 30px;
+                    }
+                    .news-ticker-track {
+                        display: flex;
+                        width: max-content;
+                        animation: scroll-ticker 30s linear infinite;
+                    }
+                    .news-ticker-track:hover {
+                        animation-play-state: paused;
+                    }
+                    .news-ticker-item {
+                        width: 320px; /* Largeur fixe de chaque carte */
+                        margin-right: 20px;
                         flex-shrink: 0;
                     }
-                    @media (min-width: 768px) {
-                        .slider-slide-grid {
-                            grid-template-columns: repeat(2, 1fr);
-                        }
-                    }
-                    @media (min-width: 1024px) {
-                        .slider-slide-grid {
-                            grid-template-columns: repeat(3, 1fr);
-                        }
+                    @keyframes scroll-ticker {
+                        0% { transform: translateX(0); }
+                        100% { transform: translateX(-50%); }
                     }
                 </style>
-                <div class="news-slider-container" style="position: relative; max-width: 1200px; margin: 0 auto; overflow: hidden; padding-bottom: 50px;">
-                    <div id="home-news-slider" style="display: flex; transition: transform 0.5s ease-in-out;">
-                        <!-- Les groupes (slides) de 6 actualités seront injectés ici par JS -->
-                    </div>
-                    
-                    <!-- Contrôles du slider -->
-                    <button id="slider-prev" style="position: absolute; left: -15px; top: 40%; transform: translateY(-50%); background: var(--color-rotary-blue); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button id="slider-next" style="position: absolute; right: -15px; top: 40%; transform: translateY(-50%); background: var(--color-rotary-blue); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                    
-                    <!-- Indicateurs -->
-                    <div id="slider-dots" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10;">
-                        <!-- Points injectés par JS -->
+                <div class="news-ticker-wrapper">
+                    <div id="home-news-ticker" class="news-ticker-track">
+                        <!-- Les cartes seront injectées ici par JS -->
                     </div>
                 </div>
                 
