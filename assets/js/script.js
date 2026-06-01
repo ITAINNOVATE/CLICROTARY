@@ -17,26 +17,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.warn('[CLIC Rotary] ⚠️ Client Supabase ITA-CORE non disponible.');
     }
 
-    // --- INITIALISATION IMMÉDIATE DU MENU MOBILE ---
-    const mobileToggle = document.getElementById('mobile-toggle');
-    const navLinks = document.getElementById('nav-links');
-
-    if (mobileToggle && navLinks) {
-        mobileToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-
-            const icon = mobileToggle.querySelector('i');
-            if (icon) {
-                if (navLinks.classList.contains('active')) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-times');
-                } else {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
+    // --- INITIALISATION DU MENU MOBILE (Délégation) ---
+    document.addEventListener('click', (e) => {
+        const toggleBtn = e.target.closest('#mobile-toggle');
+        if (toggleBtn) {
+            const navLinks = document.getElementById('nav-links');
+            if (navLinks) {
+                navLinks.classList.toggle('active');
+                const icon = toggleBtn.querySelector('i');
+                if (icon) {
+                    if (navLinks.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
                 }
             }
-        });
-    }
+        }
+    });
 
     // --- Smart Page Detection: only fetch what this page needs ---
     const page = window.location.pathname.split('/').pop() || 'index.html';
