@@ -509,7 +509,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (newsGrid) {
-           // --- HOME NEWS TICKER (Défilement continu) ---
+        window.renderNews(newsData);
+    }
+
+    // --- HOME NEWS TICKER (Défilement continu) ---
     const newsTickerContainer = document.getElementById('home-news-ticker');
     if (newsTickerContainer && newsData && newsData.length > 0) {
         // Pour un défilement infini sans coupure, on duplique la liste d'actualités exactement 1 fois
