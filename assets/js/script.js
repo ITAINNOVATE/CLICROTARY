@@ -512,17 +512,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.renderNews(newsData);
     }
 
-    // --- HOME NEWS SLIDER (Grid 3x2) ---
+    // --- HOME NEWS SLIDER (Grid 3x2 Animée) ---
     const newsSliderContainer = document.getElementById('home-news-slider');
     if (newsSliderContainer && newsData && newsData.length > 0) {
         let currentSlide = 0;
         const dotsContainer = document.getElementById('slider-dots');
         
+        // On duplique les données pour forcer l'animation en boucle (même s'il y a peu d'articles)
+        let displayNews = [...newsData];
+        while (displayNews.length < 18) { // On s'assure d'avoir au moins 3 pages de 6
+            displayNews = [...displayNews, ...newsData];
+        }
+        
         // Grouper les actualités par pages de 6 (2 lignes x 3 colonnes)
         const chunkSize = 6;
         const chunks = [];
-        for (let i = 0; i < newsData.length; i += chunkSize) {
-            chunks.push(newsData.slice(i, i + chunkSize));
+        for (let i = 0; i < displayNews.length; i += chunkSize) {
+            chunks.push(displayNews.slice(i, i + chunkSize));
         }
         
         // Créer les slides
@@ -533,9 +539,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             chunk.forEach(news => {
                 const imageUrl = news.image || 'https://via.placeholder.com/800x800?text=Image';
                 const formattedDate = news.date || new Date().toISOString().split('T')[0];
-                const summary = news.summary ? (news.summary.length > 100 ? news.summary.substring(0, 100) + '...' : news.summary) : '';
+                const summary = news.summary ? (news.summary.length > 80 ? news.summary.substring(0, 80) + '...' : news.summary) : '';
                 
-                // Utiliser exactement le même design de carte que sur la page actualités
+                // Design de carte identique à la page actualités, mais textes légèrement plus compacts
                 const cardHtml = `
                     <div class="action-card" style="margin: 0; height: 100%; display: flex; flex-direction: column;">
                         <div class="action-image">
@@ -543,14 +549,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <img src="${imageUrl}" alt="${news.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=Image'">
                             <div class="action-status status-avenir" style="background: var(--color-rotary-blue);">${news.category || 'Actualité'}</div>
                         </div>
-                        <div class="action-content" style="flex: 1; display: flex; flex-direction: column;">
-                            <div class="action-meta">
+                        <div class="action-content" style="flex: 1; display: flex; flex-direction: column; padding: 1.2rem;">
+                            <div class="action-meta" style="margin-bottom: 0.5rem;">
                                 <span>${formattedDate}</span>
                             </div>
-                            <h3 class="action-title" style="min-height: auto;">${news.title}</h3>
-                            <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.5; flex: 1;">${summary}</p>
+                            <h3 class="action-title" style="min-height: auto; font-size: 1.1rem; margin-bottom: 0.5rem;">${news.title}</h3>
+                            <p style="color: var(--color-text-muted); font-size: 0.85rem; margin-bottom: 1rem; line-height: 1.4; flex: 1;">${summary}</p>
                             <div class="action-footer" style="margin-top: auto;">
-                                <a href="actualite-detail.html?id=${news.id}" class="btn btn-secondary" style="border-color: #ddd; color: #333; padding: 0.5rem 1rem; font-size: 0.9rem;">Lire l'article</a>
+                                <a href="actualite-detail.html?id=${news.id}" class="btn btn-secondary" style="border-color: #ddd; color: #333; padding: 0.4rem 0.8rem; font-size: 0.85rem;">Lire l'article</a>
                             </div>
                         </div>
                     </div>
@@ -560,27 +566,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             newsSliderContainer.appendChild(slide);
             
-            // Si on a plus d'une page, on ajoute des points de navigation
-            if (chunks.length > 1) {
-                const dot = document.createElement('div');
-                dot.style.width = '12px';
-                dot.style.height = '12px';
-                dot.style.borderRadius = '50%';
-                dot.style.background = index === 0 ? 'var(--color-rotary-gold)' : 'rgba(255,255,255,0.5)';
-                dot.style.cursor = 'pointer';
-                dot.style.transition = 'background 0.3s';
-                dot.addEventListener('click', () => goToSlide(index));
-                dotsContainer.appendChild(dot);
-            }
+            // Points de navigation
+            const dot = document.createElement('div');
+            dot.style.width = '12px';
+            dot.style.height = '12px';
+            dot.style.borderRadius = '50%';
+            dot.style.background = index === 0 ? 'var(--color-rotary-gold)' : 'rgba(255,255,255,0.5)';
+            dot.style.cursor = 'pointer';
+            dot.style.transition = 'background 0.3s';
+            dot.addEventListener('click', () => goToSlide(index));
+            dotsContainer.appendChild(dot);
         });
-
-        // Cacher les flèches si une seule page
-        if (chunks.length <= 1) {
-            const prevBtn = document.getElementById('slider-prev');
-            const nextBtn = document.getElementById('slider-next');
-            if (prevBtn) prevBtn.style.display = 'none';
-            if (nextBtn) nextBtn.style.display = 'none';
-        }
 
         const updateSlider = () => {
             newsSliderContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
@@ -591,17 +587,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         const nextSlide = () => {
-            if (chunks.length > 1) {
-                currentSlide = (currentSlide + 1) % chunks.length;
-                updateSlider();
-            }
+            currentSlide = (currentSlide + 1) % chunks.length;
+            updateSlider();
         };
 
         const prevSlide = () => {
-            if (chunks.length > 1) {
-                currentSlide = (currentSlide - 1 + chunks.length) % chunks.length;
-                updateSlider();
-            }
+            currentSlide = (currentSlide - 1 + chunks.length) % chunks.length;
+            updateSlider();
         };
 
         const goToSlide = (index) => {
@@ -610,16 +602,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             resetInterval();
         };
 
-        let slideInterval = null;
-        if (chunks.length > 1) {
-            slideInterval = setInterval(nextSlide, 6000); // 6 secondes pour lire 6 cartes
-        }
+        // Tourne en boucle toutes les 5 secondes
+        let slideInterval = setInterval(nextSlide, 5000);
         
         const resetInterval = () => {
-            if (slideInterval) {
-                clearInterval(slideInterval);
-                slideInterval = setInterval(nextSlide, 6000);
-            }
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 5000);
         };
 
         const nextBtn = document.getElementById('slider-next');
