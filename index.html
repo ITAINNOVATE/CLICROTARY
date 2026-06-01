@@ -280,15 +280,35 @@
             </div>
         </section>
 
-        <!-- Nos Produits — ITA-CORE Multi-Tenant -->
-        <section class="section bg-african-pattern" id="products-section">
+        <!-- Notre Actualité — Slider -->
+        <section class="section bg-african-pattern" id="news-slider-section">
             <div class="container">
-                <div class="products-section-header">
-                    <h2>Nos Produits</h2>
-                    <p>Découvrez les articles et produits proposés par le CLIC Rotary Bénin.</p>
+                <div class="section-header" style="text-align: center; margin-bottom: 2rem;">
+                    <h2>Notre Actualité</h2>
+                    <p>Découvrez les dernières nouvelles et actions du District 9103.</p>
                 </div>
-                <div class="products-grid" id="products-grid">
-                    <!-- Les produits seront chargés dynamiquement depuis ITA-CORE -->
+                
+                <div class="news-slider-container" style="position: relative; max-width: 800px; margin: 0 auto; border-radius: 12px; overflow: hidden; aspect-ratio: 1/1; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                    <div id="home-news-slider" style="width: 100%; height: 100%; display: flex; transition: transform 0.5s ease-in-out;">
+                        <!-- Les images d'actualité seront injectées ici par JS -->
+                    </div>
+                    
+                    <!-- Contrôles du slider -->
+                    <button id="slider-prev" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: rgba(0,53,128,0.8); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; z-index: 10;">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button id="slider-next" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: rgba(0,53,128,0.8); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; z-index: 10;">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    
+                    <!-- Indicateurs -->
+                    <div id="slider-dots" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10;">
+                        <!-- Points injectés par JS -->
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="actualites.html" class="btn btn-primary">Lire l'actualité</a>
                 </div>
             </div>
         </section>

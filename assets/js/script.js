@@ -512,11 +512,82 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.renderNews(newsData);
     }
 
-    // --- PRODUCTS: Chargement automatique depuis ITA-CORE ---
-    if (typeof loadProducts === 'function') {
-        loadProducts().catch(err => {
-            console.error('[CLIC Rotary] ⚠️ Erreur chargement produits (non bloquant):', err);
+    // --- HOME NEWS SLIDER ---
+    const newsSliderContainer = document.getElementById('home-news-slider');
+    if (newsSliderContainer && newsData && newsData.length > 0) {
+        // Prendre les 5 dernières actualités
+        const sliderNews = newsData.slice(0, 5);
+        let currentSlide = 0;
+        const dotsContainer = document.getElementById('slider-dots');
+        
+        // Créer les slides
+        sliderNews.forEach((news, index) => {
+            const imageUrl = news.image || 'https://via.placeholder.com/800x800?text=Image';
+            
+            // Slide
+            const slide = document.createElement('div');
+            slide.style.minWidth = '100%';
+            slide.style.height = '100%';
+            slide.style.position = 'relative';
+            
+            // Effet fond flouté + image nette au centre
+            slide.innerHTML = `
+                <a href="actualite-detail.html?id=${news.id}" style="display: block; width: 100%; height: 100%; position: relative;">
+                    <div style="position: absolute; inset: -20px; background-image: url('${imageUrl}'); background-size: cover; background-position: center; filter: blur(20px); transform: scale(1.2); opacity: 0.8; z-index: 0;"></div>
+                    <img src="${imageUrl}" alt="${news.title}" style="position: relative; z-index: 1; width: 100%; height: 100%; object-fit: contain; background: rgba(0,0,0,0.3);">
+                    
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 40px 20px 20px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); color: white; z-index: 2; text-align: center;">
+                        <span style="display: inline-block; background: var(--color-rotary-blue); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; margin-bottom: 8px;">${news.category || 'Actualité'}</span>
+                        <h3 style="margin: 0; font-size: 1.2rem; color: #FFD700; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">${news.title}</h3>
+                    </div>
+                </a>
+            `;
+            newsSliderContainer.appendChild(slide);
+            
+            // Dot
+            const dot = document.createElement('div');
+            dot.style.width = '12px';
+            dot.style.height = '12px';
+            dot.style.borderRadius = '50%';
+            dot.style.background = index === 0 ? 'var(--color-rotary-gold)' : 'rgba(255,255,255,0.5)';
+            dot.style.cursor = 'pointer';
+            dot.style.transition = 'background 0.3s';
+            dot.addEventListener('click', () => goToSlide(index));
+            dotsContainer.appendChild(dot);
         });
+
+        const updateSlider = () => {
+            newsSliderContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+            const dots = dotsContainer.children;
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].style.background = i === currentSlide ? 'var(--color-rotary-gold)' : 'rgba(255,255,255,0.5)';
+            }
+        };
+
+        const nextSlide = () => {
+            currentSlide = (currentSlide + 1) % sliderNews.length;
+            updateSlider();
+        };
+
+        const prevSlide = () => {
+            currentSlide = (currentSlide - 1 + sliderNews.length) % sliderNews.length;
+            updateSlider();
+        };
+
+        const goToSlide = (index) => {
+            currentSlide = index;
+            updateSlider();
+            resetInterval();
+        };
+
+        let slideInterval = setInterval(nextSlide, 4000);
+        const resetInterval = () => {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 4000);
+        };
+
+        document.getElementById('slider-next').addEventListener('click', () => { nextSlide(); resetInterval(); });
+        document.getElementById('slider-prev').addEventListener('click', () => { prevSlide(); resetInterval(); });
     }
 
     // Render News Detail
