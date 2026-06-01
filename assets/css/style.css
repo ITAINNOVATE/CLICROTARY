@@ -5,6 +5,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 :root {
@@ -65,6 +66,8 @@ body {
     color: var(--color-text-main);
     background-color: var(--color-bg-body);
     font-size: 16px;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 img {
@@ -687,10 +690,27 @@ h3 {
     }
 
     /* Tighten grids on mobile */
-    .stats-grid { gap: 1rem; }
-    .causes-grid { gap: 1rem; }
-    .actions-grid { gap: 1rem; }
-    .footer-grid { gap: 1.5rem; text-align: center; }
+    .stats-grid { gap: 1rem; grid-template-columns: 1fr 1fr; }
+    .causes-grid { gap: 1rem; grid-template-columns: 1fr; }
+    .actions-grid { gap: 1rem; grid-template-columns: 1fr; }
+    .footer-grid { gap: 1.5rem; text-align: center; grid-template-columns: 1fr; }
+
+    /* General Layout Adjustments */
+    .hero {
+        padding: 3rem 1rem;
+    }
+
+    .container {
+        padding: 0 1rem;
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
+    }
+
+    p {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
 }
 
 /* Cause Card with Image Updates */
@@ -1311,6 +1331,9 @@ h3 {
 
 @media (max-width: 480px) {
     .products-grid {
+        grid-template-columns: 1fr;
+    }
+    .stats-grid {
         grid-template-columns: 1fr;
     }
 }
