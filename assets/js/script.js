@@ -218,6 +218,83 @@ document.addEventListener('DOMContentLoaded', async () => {
             created_at: "2026-09-24T09:00:00Z"
         },
         {
+            id: 7,
+            title: "Pour un Monde Sans Polio — Rejoignez les Foulées contre la Polio !",
+            category: "Événements",
+            date: "24 Octobre 2026",
+            club: "District 9103 & Ouidah 2026",
+            image: "assets/images/poliofoulees.jpeg",
+            summary: "Le samedi 24 octobre 2026, rejoignez les Foulées contre la Polio à Ouidah ! Sportif ou non, marchez ou courez pour une seule cause : l’éradication de la polio.",
+            content: `
+                <div class="announcement-content">
+                    <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 181, 226, 0.1); color: #00B5E2; padding: 6px 16px; border-radius: 20px; font-weight: 600; font-size: 0.95rem; margin-bottom: 2rem;">
+                        <i class="fas fa-running"></i> Événement Sportif & Solidaire
+                    </div>
+
+                    <h2 style="font-size: 1.4rem; font-weight: 700; color: #005DAA; margin-bottom: 1rem;">
+                        POUR UN MONDE SANS POLIO ! 🌍❤️
+                    </h2>
+
+                    <p style="font-size: 1.2rem; font-weight: 600; color: #dc3545; margin-bottom: 1.2rem;">
+                        Le samedi 24 octobre 2026, rejoignez les Foulées contre la Polio à Ouidah !
+                    </p>
+
+                    <p style="font-size: 1.1rem; line-height: 1.9; margin-bottom: 1.5rem;">
+                        Que vous soyez sportif ou non, marchez ou courez à votre rythme : l’essentiel, c’est de se mobiliser ensemble pour une seule cause : <strong>l’éradication de la polio</strong>. 💉
+                    </p>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0;">
+                        <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-left: 4px solid #005DAA; border-radius: 10px; padding: 1.2rem;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                                <i class="fas fa-calendar-alt fa-lg" style="color: #005DAA;"></i>
+                                <strong style="font-size: 1.05rem; color: #111;">Date</strong>
+                            </div>
+                            <p style="margin: 0; color: #555; font-size: 1rem;">Samedi 24 octobre 2026</p>
+                        </div>
+
+                        <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-left: 4px solid #dc3545; border-radius: 10px; padding: 1.2rem;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                                <i class="fas fa-map-marker-alt fa-lg" style="color: #dc3545;"></i>
+                                <strong style="font-size: 1.05rem; color: #111;">Lieu</strong>
+                            </div>
+                            <p style="margin: 0; color: #555; font-size: 1rem;">Ouidah, Bénin</p>
+                        </div>
+
+                        <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-left: 4px solid #28a745; border-radius: 10px; padding: 1.2rem;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                                <i class="fas fa-users fa-lg" style="color: #28a745;"></i>
+                                <strong style="font-size: 1.05rem; color: #111;">Public</strong>
+                            </div>
+                            <p style="margin: 0; color: #555; font-size: 1rem;">Ouvert à tous</p>
+                        </div>
+
+                        <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-left: 4px solid #F7A81B; border-radius: 10px; padding: 1.2rem;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                                <i class="fas fa-walking fa-lg" style="color: #F7A81B;"></i>
+                                <strong style="font-size: 1.05rem; color: #111;">Format</strong>
+                            </div>
+                            <p style="margin: 0; color: #555; font-size: 1rem;">Marche ou Course</p>
+                        </div>
+                    </div>
+
+                    <div style="background: #eef7fc; border-left: 4px solid #005DAA; padding: 1.3rem 1.6rem; border-radius: 8px; margin: 2rem 0;">
+                        <p style="margin: 0; font-size: 1.15rem; font-weight: 600; color: #005DAA;">
+                            👟 Un pas après l’autre, rapprochons-nous d’un monde sans polio.
+                        </p>
+                    </div>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2rem;">
+                        <span style="background: #f1f3f5; color: #495057; padding: 4px 10px; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">#MondeSansPolio</span>
+                        <span style="background: #f1f3f5; color: #495057; padding: 4px 10px; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">#EndPolioNow</span>
+                        <span style="background: #f1f3f5; color: #495057; padding: 4px 10px; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">#JournéécontrePolio</span>
+                        <span style="background: #f1f3f5; color: #495057; padding: 4px 10px; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">#Ouidah2026</span>
+                        <span style="background: #f1f3f5; color: #495057; padding: 4px 10px; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">#FouléesContreLaPolio</span>
+                    </div>
+                </div>
+            `,
+            created_at: "2026-10-01T10:00:00Z"
+        },
+        {
             id: 2,
             title: "Conférence All Africa Rotary Club (AFCD Lomé 2026)",
             category: "Événements",
