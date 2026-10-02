@@ -65,9 +65,10 @@
                 </header>
 
                 <div
-                    style="width: 100%; height: 500px; background: #eee; border-radius: 16px; margin-bottom: 3rem; overflow: hidden;">
+                    style="width: 100%; height: 500px; background: #1a1a1a; border-radius: 16px; margin-bottom: 3rem; overflow: hidden; position: relative; box-shadow: var(--shadow-md);">
+                    <div id="detail-image-blur" style="position: absolute; inset: -20px; background-size: cover; background-position: center; filter: blur(25px); opacity: 0.65; transform: scale(1.15);"></div>
                     <img id="detail-image" src="" alt="Image à la une"
-                        style="width: 100%; height: 100%; object-fit: cover;">
+                        style="width: 100%; height: 100%; object-fit: contain; object-position: center; position: relative; z-index: 1;">
                 </div>
 
                 <div id="detail-text"

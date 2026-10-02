@@ -92,6 +92,104 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (needsNews)    fetches.push(supabaseClient.from('news').select('*').eq('platform_id', PLATFORM_ID).order('created_at', { ascending: false }));
     }
 
+    // --- ACTUALITÉS OFFICIELLES & LOCALES ---
+    const defaultNews = [
+        {
+            id: 1,
+            title: "Octobre Rose : Le message de mobilisation de la Présidente du CLIC Rotary Bénin",
+            category: "Annonces officielles",
+            date: "02 Octobre 2026",
+            club: "CLIC Rotary Bénin",
+            image: "assets/images/presidenteannonce.jpeg",
+            summary: "À l'occasion d'Octobre Rose, la Présidente Princia Bignon HOUNKANRIN rappelle qu'un simple geste peut tout changer : détecté tôt, le cancer du sein guérit dans 9 cas sur 10. Mobilisons-nous ensemble pour faire avancer la prévention.",
+            content: `
+                <div class="announcement-content">
+                    <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(217, 27, 92, 0.1); color: #d91b5c; padding: 6px 16px; border-radius: 20px; font-weight: 600; font-size: 0.95rem; margin-bottom: 2rem;">
+                        <i class="fas fa-ribbon"></i> Campagne Octobre Rose 2026
+                    </div>
+
+                    <p style="font-size: 1.2rem; font-weight: 600; color: var(--color-text-main); margin-bottom: 1.5rem;">
+                        Chères et chers membres, Chers amis,
+                    </p>
+
+                    <p style="font-size: 1.1rem; line-height: 1.9; margin-bottom: 1.5rem;">
+                        À l'occasion d'<strong>Octobre Rose</strong>, rappelons-nous qu'un simple geste peut tout changer : <strong>détecté tôt, le cancer du sein guérit dans 9 cas sur 10</strong>.
+                    </p>
+
+                    <p style="font-size: 1.1rem; line-height: 1.9; margin-bottom: 1.5rem;">
+                        En tant que membres du Rotary, notre rôle est d'informer, de soutenir et d'encourager le dépistage autour de nous. Parlez-en à vos proches, arborez le ruban rose et mobilisons-nous ensemble pour faire avancer la prévention.
+                    </p>
+
+                    <p style="font-size: 1.15rem; line-height: 1.9; margin-bottom: 2rem; color: #d91b5c; font-weight: 500;">
+                        Prenez soin de vous et de ceux que vous aimez.
+                    </p>
+
+                    <div style="margin-top: 2.5rem; padding: 1.8rem; background: #fff5f8; border-left: 4px solid #d91b5c; border-radius: 12px; box-shadow: 0 2px 10px rgba(217, 27, 92, 0.05);">
+                        <p style="margin: 0; font-size: 1.2rem; font-weight: 700; color: var(--color-text-main);">Princia Bignon HOUNKANRIN</p>
+                        <p style="margin: 0.3rem 0 0 0; color: var(--color-rotary-blue); font-weight: 600; font-size: 1rem;">Présidente 2026-2027, CLIC Rotary Bénin</p>
+                    </div>
+                </div>
+            `,
+            created_at: "2026-10-02T08:30:00Z"
+        },
+        {
+            id: 2,
+            title: "Conférence All Africa Rotary Club (AFCD Lomé 2026)",
+            category: "Événements",
+            date: "28 Février 2026",
+            club: "District 9103",
+            image: "assets/images/afcd_lome_2026.jpg",
+            summary: "Grande rencontre panafricaine des rotariens à Lomé pour échanger sur le leadership, la paix et l'impact des projets communautaires en Afrique.",
+            content: `
+                <p>La conférence panafricaine AFCD Lomé 2026 a réuni les leaders et membres des clubs Rotary de tout le continent autour des enjeux cruciaux du développement durable, de l'autonomisation des jeunes et du renforcement de la paix.</p>
+                <p>La délégation des clubs du Bénin a brillamment représenté le pays avec plusieurs partages d'expériences sur des projets à fort impact social et communautaire.</p>
+            `,
+            created_at: "2026-02-28T10:00:00Z"
+        },
+        {
+            id: 3,
+            title: "Séminaire National sur l'Image Publique du Rotary",
+            category: "Temps forts nationaux",
+            date: "18 Mars 2026",
+            club: "CLIC Rotary Bénin",
+            image: "assets/images/seminaire_image_publique_2026.jpg",
+            summary: "Formation des responsables communication des clubs pour amplifier la visibilité des actions rotariennes et valoriser l'engagement des bénévoles.",
+            content: `
+                <p>Organisé par la Commission Image Publique du CLIC Rotary Bénin, ce séminaire interactif a rassemblé les délégués à la communication de plus de 30 clubs du Bénin.</p>
+                <p>Au programme : utilisation efficace des médias numériques, relations avec la presse, narration visuelle et cohérence de la marque Rotary pour inspirer de nouveaux membres et donateurs.</p>
+            `,
+            created_at: "2026-03-18T09:00:00Z"
+        },
+        {
+            id: 4,
+            title: "PolioPlus : Mobilisation pour la Journée Nationale de Vaccination",
+            category: "Actualités des clubs",
+            date: "24 Avril 2026",
+            club: "Commission PolioPlus Bénin",
+            image: "assets/images/news/polio_vacciner_pour_la_vie.jpg",
+            summary: "Les clubs Rotary du Bénin réaffirment leur engagement indéfectible dans la lutte contre la poliomyélite avec de nouvelles campagnes de proximité.",
+            content: `
+                <p>Dans le cadre de l'initiative mondiale PolioPlus, les rotariens et rotaractiens du Bénin se sont déployés sur le terrain pour accompagner les agents de santé dans les centres de santé et les communautés rurales.</p>
+                <p>Chaque enfant vacciné est un pas de plus vers un monde définitivement libéré de la polio. Ensemble, nous continuons de vacciner pour la vie.</p>
+            `,
+            created_at: "2026-04-24T08:00:00Z"
+        },
+        {
+            id: 5,
+            title: "Action Environnement : Restauration et préservation des mangroves",
+            category: "Actualités des clubs",
+            date: "05 Juin 2026",
+            club: "Inter-Clubs Littoral",
+            image: "assets/images/news/mangroves.jpeg",
+            summary: "Mise en terre de palétuviers et sensibilisation des populations riveraines pour la sauvegarde de la biodiversité côtière.",
+            content: `
+                <p>À l'occasion de la Journée Mondiale de l'Environnement, les clubs Rotary et Rotaract du Sud-Bénin ont uni leurs forces pour une grande opération de restauration des mangroves dans les zones humides côtières.</p>
+                <p>Cette action contribue à freiner l'érosion côtière, à préserver les frayères pour les poissons et à soutenir l'économie des communautés de pêcheurs.</p>
+            `,
+            created_at: "2026-06-05T07:30:00Z"
+        }
+    ];
+
     // Run all needed queries in parallel
     const results = await Promise.all(fetches);
     let idx = 0;
@@ -103,7 +201,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
     if (needsActions) { actionsData = results[idx++]?.data || []; }
-    if (needsNews)    { newsData    = results[idx++]?.data || []; }
+    if (needsNews)    { 
+        const fetchedNews = results[idx++]?.data || [];
+        const combined = [...fetchedNews];
+        defaultNews.forEach(dn => {
+            if (!combined.some(n => String(n.id) === String(dn.id))) {
+                combined.push(dn);
+            }
+        });
+        newsData = combined;
+    }
 
 
     // --- DOM Elements ---
@@ -501,11 +608,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             const imageUrl = item.image || 'https://via.placeholder.com/600x400?text=Actualit%C3%A9';
             // Assume date format is YYYY-MM-DD
             const formattedDate = item.date || new Date().toISOString().split('T')[0];
+            let badgeBg = 'var(--color-rotary-blue)';
+            if (item.category === 'Annonces officielles') {
+                badgeBg = '#D91B5C';
+            } else if (item.category === 'Temps forts nationaux') {
+                badgeBg = '#EAA812';
+            } else if (item.category === 'Événements') {
+                badgeBg = '#00B5E2';
+            }
+
             card.innerHTML = `
                 <div class="action-image">
                     <div class="img-blur-bg" style="background-image: url('${imageUrl}');"></div>
                     <img src="${imageUrl}" alt="${item.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=Image'">
-                    <div class="action-status status-avenir" style="background: var(--color-rotary-blue);">${item.category || 'Actualité'}</div>
+                    <div class="action-status status-avenir" style="background: ${badgeBg};">${item.category || 'Actualité'}</div>
                 </div>
                 <div class="action-content">
                     <div class="action-meta">
@@ -570,6 +686,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const imageUrl = news.image || 'https://via.placeholder.com/800x800?text=Image';
             const formattedDate = news.date || new Date().toISOString().split('T')[0];
             const summary = news.summary ? (news.summary.length > 80 ? news.summary.substring(0, 80) + '...' : news.summary) : '';
+            let badgeBg = 'var(--color-rotary-blue)';
+            if (news.category === 'Annonces officielles') {
+                badgeBg = '#D91B5C';
+            } else if (news.category === 'Temps forts nationaux') {
+                badgeBg = '#EAA812';
+            } else if (news.category === 'Événements') {
+                badgeBg = '#00B5E2';
+            }
             
             const cardHtml = `
                 <div class="news-ticker-item">
@@ -577,7 +701,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <div class="action-image">
                             <div class="img-blur-bg" style="background-image: url('${imageUrl}');"></div>
                             <img src="${imageUrl}" alt="${news.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600?text=Image'">
-                            <div class="action-status status-avenir" style="background: var(--color-rotary-blue);">${news.category || 'Actualité'}</div>
+                            <div class="action-status status-avenir" style="background: ${badgeBg};">${news.category || 'Actualité'}</div>
                         </div>
                         <div class="action-content" style="flex: 1; display: flex; flex-direction: column; padding: 1.2rem;">
                             <div class="action-meta" style="margin-bottom: 0.5rem;">
@@ -609,12 +733,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (loadingMsgEl) loadingMsgEl.style.display = 'none';
                 if (newsContentEl) newsContentEl.style.display = 'block';
 
+                document.title = `${item.title} - CLIC Rotary Bénin`;
+
                 setText('detail-category', item.category || 'Actualité');
                 setText('detail-date', item.date || new Date().toISOString().split('T')[0]);
                 setText('detail-title', item.title);
+                setText('detail-club', item.club || 'CLIC Rotary Bénin');
 
                 const imgEl = document.getElementById('detail-image');
                 if (imgEl) imgEl.src = item.image || 'https://via.placeholder.com/800x400?text=Actualit%C3%A9';
+                const imgBlurEl = document.getElementById('detail-image-blur');
+                if (imgBlurEl && item.image) imgBlurEl.style.backgroundImage = `url('${item.image}')`;
 
                 const textEl = document.getElementById('detail-text');
                 if (textEl) textEl.innerHTML = item.content; // Use innerHTML for text editor content

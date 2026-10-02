@@ -60,6 +60,8 @@
                     <div class="form-group">
                         <label>Catégorie</label>
                         <select id="news-category" required style="width:100%; padding:0.75rem; border:1px solid #ddd; border-radius:4px;">
+                            <option value="Annonces officielles">Annonces officielles</option>
+                            <option value="Actualités des clubs">Actualités des clubs</option>
                             <option value="Événements">Événements</option>
                             <option value="Temps forts nationaux">Temps forts nationaux</option>
                             <option value="International">International</option>
@@ -155,6 +157,7 @@
             e.preventDefault();
             const id = document.getElementById('news-id').value;
             const newsData = {
+                platform_id: '219dab14-b1e2-4594-834e-e09dd0930b2a',
                 title: document.getElementById('news-title').value,
                 category: document.getElementById('news-category').value,
                 date: document.getElementById('news-date').value,
