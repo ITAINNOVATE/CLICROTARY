@@ -133,6 +133,91 @@ document.addEventListener('DOMContentLoaded', async () => {
             created_at: "2026-10-02T08:30:00Z"
         },
         {
+            id: 6,
+            title: "Monde Sans Polio — Votre don, votre impact !",
+            category: "Temps forts nationaux",
+            date: "24 Septembre 2026",
+            club: "District 9103 & Clubs du Bénin",
+            image: "assets/images/poliocollecte.jpeg",
+            summary: "💉 525 FCFA = 1 dose de vaccin. Contribuer, c’est poser un geste concret pour soutenir la vaccination et participer à la protection de nos enfants contre la poliomyélite.",
+            content: `
+                <div class="announcement-content">
+                    <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(220, 53, 69, 0.1); color: #dc3545; padding: 6px 16px; border-radius: 20px; font-weight: 600; font-size: 0.95rem; margin-bottom: 2rem;">
+                        <i class="fas fa-syringe"></i> Journée Mondiale pour l'Éradication de la Polio
+                    </div>
+
+                    <h2 style="font-size: 1.4rem; font-weight: 700; color: #005DAA; margin-bottom: 1rem;">
+                        MONDE SANS POLIO — VOTRE DON, VOTRE IMPACT !
+                    </h2>
+
+                    <p style="font-size: 1.2rem; font-weight: 600; color: #dc3545; margin-bottom: 1.2rem;">
+                        💉 525 FCFA = 1 dose de vaccin.
+                    </p>
+
+                    <p style="font-size: 1.1rem; line-height: 1.9; margin-bottom: 1.5rem;">
+                        Contribuer, c’est poser un geste concret pour soutenir la vaccination et participer à la protection de nos enfants contre la poliomyélite.
+                    </p>
+
+                    <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                        <h4 style="margin-top: 0; margin-bottom: 1rem; color: #005DAA; font-size: 1.1rem;">
+                            <i class="fas fa-hand-holding-heart"></i> Barème des contributions :
+                        </h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #005DAA; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                                <strong style="font-size: 1.2rem; color: #005DAA;">525 F</strong>
+                                <p style="margin: 4px 0 0 0; color: #555;">→ 1 dose</p>
+                            </div>
+                            <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #00B5E2; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                                <strong style="font-size: 1.2rem; color: #00B5E2;">5 250 F</strong>
+                                <p style="margin: 4px 0 0 0; color: #555;">→ 10 doses</p>
+                            </div>
+                            <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #F7A81B; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                                <strong style="font-size: 1.2rem; color: #F7A81B;">26 250 F</strong>
+                                <p style="margin: 4px 0 0 0; color: #555;">→ 50 doses</p>
+                            </div>
+                            <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #dc3545; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                                <strong style="font-size: 1.2rem; color: #dc3545;">52 500 F</strong>
+                                <p style="margin: 4px 0 0 0; color: #555;">→ 100 doses</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin: 2.5rem 0;">
+                        <a href="https://www.itaarena.com/support/monde-sans-polio" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 1.15rem; padding: 0.9rem 2.2rem; border-radius: 30px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0, 93, 170, 0.3);">
+                            👉 Je contribue maintenant <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+
+                    <div style="background: #eef7fc; border-left: 4px solid #005DAA; padding: 1.2rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                        <p style="margin: 0; font-size: 1.05rem; line-height: 1.7; color: #111;">
+                            🤝 <strong>Et votre contribution ne s’arrête pas là !</strong><br>
+                            Une partie de votre contribution vous sera reversée sur votre compte, en tant que contribution au Fonds Polio Plus, pour vous permettre de soutenir davantage cette cause.
+                        </p>
+                    </div>
+
+                    <div style="background: #fff8eb; border-left: 4px solid #F7A81B; padding: 1.2rem 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                        <p style="margin: 0; font-size: 1.05rem; line-height: 1.7; color: #111;">
+                            🎖️ <strong>Badge & Certificat :</strong> Après votre contribution, vous pourrez également télécharger votre badge de soutien et votre certificat de participation.
+                        </p>
+                    </div>
+
+                    <p style="font-size: 1.15rem; font-weight: 600; line-height: 1.8; color: #005DAA; margin-bottom: 1.5rem;">
+                        Chaque don compte. Chaque dose protège. Chaque geste nous rapproche d’un monde sans polio.
+                    </p>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.5rem;">
+                        <span style="background: #f1f3f5; color: #495057; padding: 4px 10px; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">#MondeSansPolio</span>
+                        <span style="background: #f1f3f5; color: #495057; padding: 4px 10px; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">#EndPolioNow</span>
+                        <span style="background: #f1f3f5; color: #495057; padding: 4px 10px; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">#PolioPlus</span>
+                        <span style="background: #f1f3f5; color: #495057; padding: 4px 10px; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">#UnMondeSansPolio</span>
+                        <span style="background: #f1f3f5; color: #495057; padding: 4px 10px; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">#WorldPolioDay</span>
+                        <span style="background: #f1f3f5; color: #495057; padding: 4px 10px; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">#Ouidah2026</span>
+                    </div>
+                </div>
+            `,
+            created_at: "2026-09-24T09:00:00Z"
+        },
+        {
             id: 2,
             title: "Conférence All Africa Rotary Club (AFCD Lomé 2026)",
             category: "Événements",
