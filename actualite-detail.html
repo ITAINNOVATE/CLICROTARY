@@ -4,6 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Découvrez cette actualité sur le site officiel du CLIC Rotary Bénin.">
+
+    <!-- Open Graph / WhatsApp / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="CLIC Rotary Bénin">
+    <meta property="og:title" id="meta-og-title" content="Actualité — CLIC Rotary Bénin">
+    <meta property="og:description" id="meta-og-desc" content="Découvrez cette actualité sur le site officiel du CLIC Rotary Bénin.">
+    <meta property="og:image" id="meta-og-image" content="https://clicrotary.vercel.app/assets/images/presidenteannonce.jpeg">
+    <meta property="og:image:secure_url" id="meta-og-image-secure" content="https://clicrotary.vercel.app/assets/images/presidenteannonce.jpeg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="1280">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="meta-tw-title" content="Actualité — CLIC Rotary Bénin">
+    <meta name="twitter:description" id="meta-tw-desc" content="Découvrez cette actualité sur le site officiel du CLIC Rotary Bénin.">
+    <meta name="twitter:image" id="meta-tw-image" content="https://clicrotary.vercel.app/assets/images/presidenteannonce.jpeg">
+
     <title>Détail Actualité - CLIC Rotary Bénin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,8 +91,29 @@
                 </div>
 
                 <div id="detail-text"
-                    style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 3rem; color: var(--color-text-main);">
+                    style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem; color: var(--color-text-main);">
                     <!-- Full text content -->
+                </div>
+
+                <!-- Share Box -->
+                <div class="share-box" style="margin-top: 2.5rem; padding: 1.5rem; background: var(--color-bg-light); border-radius: var(--radius-md); text-align: center; border: 1px solid #e9ecef;">
+                    <h4 style="margin-bottom: 1rem; color: var(--color-text-main); font-size: 1.05rem;">
+                        <i class="fas fa-share-alt" style="color: var(--color-rotary-blue);"></i> Partager cette actualité
+                    </h4>
+                    <div style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+                        <a id="share-whatsapp" href="#" target="_blank" rel="noopener noreferrer" class="btn" style="background: #25D366; color: white; padding: 0.5rem 1.2rem; font-size: 0.9rem; border-radius: 25px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fab fa-whatsapp fa-lg"></i> WhatsApp
+                        </a>
+                        <a id="share-facebook" href="#" target="_blank" rel="noopener noreferrer" class="btn" style="background: #1877F2; color: white; padding: 0.5rem 1.2rem; font-size: 0.9rem; border-radius: 25px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fab fa-facebook-f"></i> Facebook
+                        </a>
+                        <a id="share-linkedin" href="#" target="_blank" rel="noopener noreferrer" class="btn" style="background: #0A66C2; color: white; padding: 0.5rem 1.2rem; font-size: 0.9rem; border-radius: 25px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fab fa-linkedin-in"></i> LinkedIn
+                        </a>
+                        <button id="share-copy" type="button" class="btn btn-secondary" style="padding: 0.5rem 1.2rem; font-size: 0.9rem; border-radius: 25px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <i class="fas fa-link"></i> Copier le lien
+                        </button>
+                    </div>
                 </div>
 
 

@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const defaultNews = [
         {
             id: 1,
+            url: "actualite-octobre-rose.html",
             title: "Octobre Rose : Le message de mobilisation de la Présidente du CLIC Rotary Bénin",
             category: "Annonces officielles",
             date: "02 Octobre 2026",
@@ -134,6 +135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         {
             id: 6,
+            url: "actualite-monde-sans-polio.html",
             title: "Monde Sans Polio — Votre don, votre impact !",
             category: "Temps forts nationaux",
             date: "24 Septembre 2026",
@@ -219,6 +221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         {
             id: 7,
+            url: "actualite-foulees-polio.html",
             title: "Pour un Monde Sans Polio — Rejoignez les Foulées contre la Polio !",
             category: "Événements",
             date: "24 Octobre 2026",
@@ -792,7 +795,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <h3 class="action-title" style="min-height: auto;">${item.title}</h3>
                     <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.5;">${item.summary}</p>
                     <div class="action-footer">
-                        <a href="actualite-detail.html?id=${item.id}" class="btn btn-secondary" style="border-color: #ddd; color: #333; padding: 0.5rem 1rem; font-size: 0.9rem;">Lire l'article</a>
+                        <a href="${item.url || ('actualite-detail.html?id=' + item.id)}" class="btn btn-secondary" style="border-color: #ddd; color: #333; padding: 0.5rem 1rem; font-size: 0.9rem;">Lire l'article</a>
                     </div>
                 </div>
             `;
@@ -872,7 +875,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <h3 class="action-title" style="min-height: auto; font-size: 1.1rem; margin-bottom: 0.5rem;">${news.title}</h3>
                             <p style="color: var(--color-text-muted); font-size: 0.85rem; margin-bottom: 1rem; line-height: 1.4; flex: 1;">${summary}</p>
                             <div class="action-footer" style="margin-top: auto;">
-                                <a href="actualite-detail.html?id=${news.id}" class="btn btn-secondary" style="border-color: #ddd; color: #333; padding: 0.4rem 0.8rem; font-size: 0.85rem;">Lire l'article</a>
+                                <a href="${news.url || ('actualite-detail.html?id=' + news.id)}" class="btn btn-secondary" style="border-color: #ddd; color: #333; padding: 0.4rem 0.8rem; font-size: 0.85rem;">Lire l'article</a>
                             </div>
                         </div>
                     </div>
@@ -890,6 +893,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (newsId) {
             const item = newsData.find(n => String(n.id) === String(newsId));
             if (item) {
+                // Rediriger vers la page statique dédiée si existante (optimisée Open Graph / réseaux sociaux)
+                if (item.url) {
+                    window.location.replace(item.url);
+                    return;
+                }
+
                 const loadingMsgEl = document.getElementById('loading-message');
                 const newsContentEl = document.getElementById('news-content');
                 if (loadingMsgEl) loadingMsgEl.style.display = 'none';
@@ -909,6 +918,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 const textEl = document.getElementById('detail-text');
                 if (textEl) textEl.innerHTML = item.content; // Use innerHTML for text editor content
+
+                // Configuration dynamique des boutons de partage
+                const shareUrl = window.location.href;
+                const encodedUrl = encodeURIComponent(shareUrl);
+                const encodedTitle = encodeURIComponent(item.title);
+
+                const waBtn = document.getElementById('share-whatsapp');
+                if (waBtn) waBtn.href = `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`;
+
+                const fbBtn = document.getElementById('share-facebook');
+                if (fbBtn) fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+
+                const inBtn = document.getElementById('share-linkedin');
+                if (inBtn) inBtn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+
+                const copyBtn = document.getElementById('share-copy');
+                if (copyBtn) {
+                    copyBtn.onclick = function() {
+                        navigator.clipboard.writeText(shareUrl).then(() => {
+                            copyBtn.innerHTML = '<i class="fas fa-check"></i> Lien copié !';
+                            setTimeout(() => {
+                                copyBtn.innerHTML = '<i class="fas fa-link"></i> Copier le lien';
+                            }, 2000);
+                        });
+                    };
+                }
             } else {
                 const loadingMsgEl = document.getElementById('loading-message');
                 if (loadingMsgEl) loadingMsgEl.textContent = 'Article non trouvé.';
