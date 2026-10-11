@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             category: "Annonces officielles",
             date: "02 Octobre 2026",
             club: "CLIC Rotary Bénin",
-            image: "assets/images/presidenteannonce.jpeg",
+            image: "assets/images/presidenteannonce.webp",
             summary: "À l'occasion d'Octobre Rose, la Présidente Princia Bignon HOUNKANRIN rappelle qu'un simple geste peut tout changer : détecté tôt, le cancer du sein guérit dans 9 cas sur 10. Mobilisons-nous ensemble pour faire avancer la prévention.",
             content: `
                 <div class="announcement-content">
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             category: "Temps forts nationaux",
             date: "24 Septembre 2026",
             club: "District 9103 & Clubs du Bénin",
-            image: "assets/images/poliocollecte.jpeg",
+            image: "assets/images/poliocollecte.webp",
             summary: "💉 525 FCFA = 1 dose de vaccin. Contribuer, c’est poser un geste concret pour soutenir la vaccination et participer à la protection de nos enfants contre la poliomyélite.",
             content: `
                 <div class="announcement-content">
@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             category: "Événements",
             date: "24 Octobre 2026",
             club: "District 9103 & Ouidah 2026",
-            image: "assets/images/poliofoulees.jpeg",
+            image: "assets/images/poliofoulees.webp",
             summary: "Le samedi 24 octobre 2026, rejoignez les Foulées contre la Polio à Ouidah ! Sportif ou non, marchez ou courez pour une seule cause : l’éradication de la polio.",
             content: `
                 <div class="announcement-content">
@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             category: "Événements",
             date: "28 Février 2026",
             club: "District 9103",
-            image: "assets/images/afcd_lome_2026.jpg",
+            image: "assets/images/afcd_lome_2026.webp",
             summary: "Grande rencontre panafricaine des rotariens à Lomé pour échanger sur le leadership, la paix et l'impact des projets communautaires en Afrique.",
             content: `
                 <p>La conférence panafricaine AFCD Lomé 2026 a réuni les leaders et membres des clubs Rotary de tout le continent autour des enjeux cruciaux du développement durable, de l'autonomisation des jeunes et du renforcement de la paix.</p>
@@ -317,7 +317,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             category: "Temps forts nationaux",
             date: "18 Mars 2026",
             club: "CLIC Rotary Bénin",
-            image: "assets/images/seminaire_image_publique_2026.jpg",
+            image: "assets/images/seminaire_image_publique_2026.webp",
             summary: "Formation des responsables communication des clubs pour amplifier la visibilité des actions rotariennes et valoriser l'engagement des bénévoles.",
             content: `
                 <p>Organisé par la Commission Image Publique du CLIC Rotary Bénin, ce séminaire interactif a rassemblé les délégués à la communication de plus de 30 clubs du Bénin.</p>
@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             category: "Actualités des clubs",
             date: "24 Avril 2026",
             club: "Commission PolioPlus Bénin",
-            image: "assets/images/news/polio_vacciner_pour_la_vie.jpg",
+            image: "assets/images/news/polio_vacciner_pour_la_vie.webp",
             summary: "Les clubs Rotary du Bénin réaffirment leur engagement indéfectible dans la lutte contre la poliomyélite avec de nouvelles campagnes de proximité.",
             content: `
                 <p>Dans le cadre de l'initiative mondiale PolioPlus, les rotariens et rotaractiens du Bénin se sont déployés sur le terrain pour accompagner les agents de santé dans les centres de santé et les communautés rurales.</p>
@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             category: "Actualités des clubs",
             date: "05 Juin 2026",
             club: "Inter-Clubs Littoral",
-            image: "assets/images/news/mangroves.jpeg",
+            image: "assets/images/news/mangroves.webp",
             summary: "Mise en terre de palétuviers et sensibilisation des populations riveraines pour la sauvegarde de la biodiversité côtière.",
             content: `
                 <p>À l'occasion de la Journée Mondiale de l'Environnement, les clubs Rotary et Rotaract du Sud-Bénin ont uni leurs forces pour une grande opération de restauration des mangroves dans les zones humides côtières.</p>
